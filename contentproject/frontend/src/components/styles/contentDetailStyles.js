@@ -1,0 +1,45 @@
+import styled from "styled-components";
+
+export const ContentDetailContainer = styled.div`
+  background-color: #fff;
+  border-radius: 30px;
+  margin: 0;
+  width: 100%;
+  box-shadow: ${(props) => props.theme.boxShadow.medium};
+
+  @media ${(props) => props.theme.device.laptop} {
+    margin: 1rem;
+  }
+`;
+
+export const ContentDetailImage = styled.div`
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 10rem;
+  background-size: cover;
+  background-position: center;
+  background-image: url(${(props) => props.source});
+`;
+
+export const ContentDetailTitle = styled.h1`
+  font-size: 3rem;
+`;
+
+export const ContentDetailSubtitle = styled.h2`
+  font-size: 1.3rem;
+  color: ${(props) => (props.muted ? props.theme.colors.muted : "#000")};
+  margin-top: ${(props) => (props.marginTop ? "3rem" : "0")};
+`;
+
+export const ContentDetailBody = styled.div`
+  margin-top: 1rem;
+  padding: 2rem;
+`;
+
+export const ContentDetailInfo = styled.div`
+  margin-top: 3rem;
+`;
+
+export const ContentDetailURL = styled.a`
+  font-size: 1.5rem;
+`;
