@@ -43,3 +43,8 @@ export const ContentDetailInfo = styled.div`
 export const ContentDetailURL = styled.a`
   font-size: 1.5rem;
 `;
+
+export const ContentType = styled.h5`
+  font-size: 1.5rem;
+  text-transform: uppercase;
+`;

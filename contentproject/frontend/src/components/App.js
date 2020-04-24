@@ -1,16 +1,11 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
-import ListPage from "./usercontent/ListPage";
-import BlogList from "./usercontent/blogs/BlogList";
-import BlogDetail from "./usercontent/blogs/BlogDetail";
-import PodcastList from "./usercontent/podcasts/PodcastList";
-import PodcastDetail from "./usercontent/podcasts/PodcastDetail";
 import HomePage from "./HomePage";
 import Login from "./accounts/Login";
 import Register from "./accounts/Register";
-import YoutubeList from "./usercontent/youtube/YoutubeList";
-import YoutubeDetail from "./usercontent/youtube/YoutubeDetail";
+import ContentDetail from "./usercontent/ContentDetail";
+import ContentList from "./usercontent/ContentList";
 
 function App() {
   return (
@@ -29,9 +24,7 @@ function App() {
         path="/blogs"
         render={() => (
           <Layout>
-            <ListPage>
-              <BlogList />
-            </ListPage>
+            <ContentList query="blogs" type="Blog" heading="Blogs" />
           </Layout>
         )}
       />
@@ -40,7 +33,11 @@ function App() {
         path="/blogs/:id"
         render={(routeProps) => (
           <Layout>
-            <BlogDetail id={routeProps.match.params.id} />
+            <ContentDetail
+              id={routeProps.match.params.id}
+              query="blogs"
+              type="Blog"
+            />
           </Layout>
         )}
       />
@@ -49,9 +46,7 @@ function App() {
         path="/podcasts"
         render={() => (
           <Layout>
-            <ListPage>
-              <PodcastList />
-            </ListPage>
+            <ContentList query="podcasts" type="Podcast" heading="Podcasts" />
           </Layout>
         )}
       />
@@ -60,7 +55,11 @@ function App() {
         path="/podcasts/:id"
         render={(routeProps) => (
           <Layout>
-            <PodcastDetail id={routeProps.match.params.id} />
+            <ContentDetail
+              id={routeProps.match.params.id}
+              query="podcasts"
+              type="Podcast"
+            />
           </Layout>
         )}
       />
@@ -69,9 +68,11 @@ function App() {
         path="/youtube"
         render={() => (
           <Layout>
-            <ListPage>
-              <YoutubeList />
-            </ListPage>
+            <ContentList
+              query="youtube"
+              type="Youtube"
+              heading="Youtube Channels"
+            />
           </Layout>
         )}
       />
@@ -80,7 +81,11 @@ function App() {
         path="/youtube/:id"
         render={(routeProps) => (
           <Layout>
-            <YoutubeDetail id={routeProps.match.params.id} />
+            <ContentDetail
+              id={routeProps.match.params.id}
+              query="youtube"
+              type="Youtube"
+            />
           </Layout>
         )}
       />

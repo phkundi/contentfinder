@@ -23,7 +23,7 @@ function ContentCard({ content, type, query }) {
         <CardTitle>
           <Link to={`/${query}/${content.id}`}>{content.name}</Link>
         </CardTitle>
-        <CardSubtitle>By {content.owner}</CardSubtitle>
+        <CardSubtitle>By {content.owner.username}</CardSubtitle>
         <CardDesription>
           {content.description.substring(0, 100) + " ..."}
         </CardDesription>
