@@ -1,59 +1,45 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import ContentCard from "./ContentCard";
 import { axiosInstance } from "../../axiosInstance";
-import FilterBar from "../common/FilterBar";
-
-const ListPageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 1rem;
-  max-width: 100%;
-  padding: 1rem;
-
-  @media ${(props) => props.theme.device.laptop} {
-    padding: 0;
-  }
-`;
-
-const ListContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-`;
-
-const ContentListHeading = styled.h2``;
+import FilterBar from "./FilterBar";
+import {
+  ListPageWrapper,
+  ListContainer,
+  ContentListHeading,
+} from "../styles/ContentListStyles";
 
 function ContentList({ type, query, heading }) {
   const [content, setContent] = useState([]);
+  const [filter, setFilter] = useState(null);
 
   useEffect(() => {
     const getContent = () => {
       axiosInstance.get(`content/${query}/`).then((res) => {
-        setContent(res.data);
+        if (filter) {
+          const filteredContent = res.data.filter((content) =>
+            content.tags.includes(filter)
+          );
+          setContent(filteredContent);
+        } else {
+          setContent(res.data);
+        }
       });
     };
     getContent();
-  }, []);
+  }, [query, filter]);
 
   if (content) {
     return (
       <ListPageWrapper>
-        <FilterBar />
-        <ContentListHeading>{heading}</ContentListHeading>
-        <ListContainer>
-          {content.map((content) => (
-            <ContentCard
-              key={content.id}
-              content={content}
-              type={type}
-              query={query}
-            />
-          ))}
-        </ListContainer>
+        <FilterBar setFilter={setFilter} filter={filter} />
+        <div>
+          <ContentListHeading>{heading}</ContentListHeading>
+          <ListContainer>
+            {content.map((content, i) => (
+              <ContentCard key={i} content={content} type={type} />
+            ))}
+          </ListContainer>
+        </div>
       </ListPageWrapper>
     );
   } else {

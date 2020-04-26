@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Blog, Tag, Podcast, YoutubeChannel
+from .models import Blog, Tag, Podcast, Youtube
 from users.serializers import ProfileSerializer
 
 class CustomOwnerField(serializers.RelatedField):
@@ -12,22 +12,22 @@ class TagSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class BlogSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
     owner = CustomOwnerField(read_only=True)
     class Meta:
         model = Blog
         fields = "__all__"
 
 class PodcastSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
     owner = CustomOwnerField(read_only=True)
     class Meta:
         model = Podcast
         fields = "__all__"
 
-class YoutubeChannelSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+class YoutubeSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
     owner = CustomOwnerField(read_only=True)
     class Meta:
-        model = YoutubeChannel
+        model = Youtube
         fields = "__all__"

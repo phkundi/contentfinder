@@ -1,56 +1,47 @@
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import Searchbar from "./Searchbar";
+import useToggleState from "../../hooks/useToggleState";
+import HeaderAuthLinks from "./HeaderAuthLinks";
+import HeaderGuestLinks from "./HeaderGuestLinks";
+import { HeaderContainer, BackButton } from "../styles/HeaderStyles";
 
-const HeaderContainer = styled.div`
-  margin-bottom: 3rem;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-
-  @media ${(props) => props.theme.device.laptop} {
-    padding: 0;
-  }
-`;
-
-const UserActionsContainer = styled.div`
-  display: flex;
-  & > a {
-    font-weight: 500;
-    margin-left: 1rem;
-  }
-`;
-
-const HeaderLogoutLink = styled.a`
-  margin-right: 1rem;
-  color: ${(props) => props.theme.colors.red};
-`;
-
-function Header({ auth, logout }) {
+function Header({ auth, logout, goBack, hideSearch }) {
   const { isAuthenticated, user } = auth;
+  const [showActions, toggleShowActions] = useToggleState(false);
 
-  const HeaderGuestLinks = (
-    <UserActionsContainer>
-      <Link to="/login">Login</Link>
-      <Link to="/register">Sign Up</Link>
-    </UserActionsContainer>
-  );
+  const composeHeader = () => {
+    if (goBack) {
+      return (
+        <BackButton>
+          <Link to={`/${goBack}`}>
+            <i className="fas fa-arrow-left" />
+            Back
+          </Link>
+        </BackButton>
+      );
+    } else if (hideSearch) {
+      return <Searchbar hideSearch={true} />;
+    } else {
+      return <Searchbar />;
+    }
+  };
 
-  const HeaderAuthLinks = (
-    <UserActionsContainer>
-      <HeaderLogoutLink onClick={logout} href="#">
-        Logout
-      </HeaderLogoutLink>
-      <span>{user ? user.username : ""}</span>
-    </UserActionsContainer>
-  );
   return (
     <HeaderContainer>
-      <Searchbar />
-      {isAuthenticated ? HeaderAuthLinks : HeaderGuestLinks}
+      {composeHeader()}
+      {isAuthenticated ? (
+        <HeaderAuthLinks
+          user={user}
+          logout={logout}
+          toggleShowActions={toggleShowActions}
+          showActions={showActions}
+        />
+      ) : (
+        <HeaderGuestLinks />
+      )}
     </HeaderContainer>
   );
 }
 
-export default Header;
+export default memo(Header);

@@ -8,34 +8,47 @@ import {
   CardTitle,
   CardSubtitle,
   CardDesription,
+  CardViewButton,
+  CardFooterBottomWrapper,
   CardFooter,
   CardTags,
   FooterText,
   TagBox,
-} from "../styles/contentCardStyles";
+} from "../styles/ContentCardStyles";
 
-function ContentCard({ content, type, query }) {
+function ContentCard({ content, type }) {
   return (
     <Card>
-      <CardImage source="https://source.unsplash.com/random" />
-      <CardBody>
-        <ContentType>{type}</ContentType>
-        <CardTitle>
-          <Link to={`/${query}/${content.id}`}>{content.name}</Link>
-        </CardTitle>
-        <CardSubtitle>By {content.owner.username}</CardSubtitle>
-        <CardDesription>
-          {content.description.substring(0, 100) + " ..."}
-        </CardDesription>
-      </CardBody>
-      <CardFooter>
-        <CardTags>
-          <FooterText>Tags: </FooterText>
-          {content.tags.map((tag, i) => (
-            <TagBox key={i}>{tag}</TagBox>
-          ))}
-        </CardTags>
-      </CardFooter>
+      <div>
+        <CardImage source="https://source.unsplash.com/random" />
+
+        <CardBody>
+          <ContentType>{type ? type : content.type}</ContentType>
+          <CardTitle>
+            <Link to={`/${content.slug}/${content.id}`}>{content.name}</Link>
+          </CardTitle>
+          <CardSubtitle>By {content.owner.username}</CardSubtitle>
+          <CardDesription>
+            {content.description.substring(0, 100) + " ... "}
+          </CardDesription>
+        </CardBody>
+      </div>
+      <CardFooterBottomWrapper>
+        <CardViewButton>
+          <Link to={`/${content.slug}/${content.id}`}>
+            See Details <i className="fas fa-angle-double-right"></i>
+          </Link>
+        </CardViewButton>
+
+        <CardFooter>
+          <CardTags>
+            <FooterText>Tags: </FooterText>
+            {content.tags.map((tag, i) => (
+              <TagBox key={i}>{tag}</TagBox>
+            ))}
+          </CardTags>
+        </CardFooter>
+      </CardFooterBottomWrapper>
     </Card>
   );
 }

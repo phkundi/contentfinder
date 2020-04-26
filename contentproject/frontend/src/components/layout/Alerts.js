@@ -24,11 +24,32 @@ function Alerts() {
     if (errors.msg.username) {
       alert.error(errors.msg.username.join());
     }
+    if (errors.msg.url) {
+      alert.error(errors.msg.url.join());
+    }
   }, [errors]);
 
   useEffect(() => {
     if (messages.passwordsNotMatch) {
       alert.error(messages.passwordsNotMatch);
+    }
+    if (messages.urlInvalid) {
+      alert.error(messages.urlInvalid);
+    }
+    if (messages.noContentType) {
+      alert.error(messages.noContentType);
+    }
+    if (messages.noContentTitle) {
+      alert.error(messages.noContentTitle);
+    }
+    if (messages.noContentDescription) {
+      alert.error(messages.noContentDescription);
+    }
+    if (messages.tooManyTags) {
+      alert.error(messages.tooManyTags);
+    }
+    if (messages.contentAdded) {
+      alert.success(messages.contentAdded);
     }
   }, [messages]);
 

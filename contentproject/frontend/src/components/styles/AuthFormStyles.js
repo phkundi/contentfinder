@@ -31,6 +31,10 @@ export const FormTextInput = styled.input`
   width: 100%;
   padding: 1.6rem;
   border: 1px solid rgba(0, 0, 0, 0.4);
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const FormGroup = styled.div`
@@ -48,4 +52,8 @@ export const FormButton = styled.button`
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1.5px;
+
+  &:focus {
+    outline: none;
+  }
 `;

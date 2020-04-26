@@ -1,10 +1,7 @@
 import { CREATE_MESSAGE, GET_ERRORS } from "../reducers/types";
 
 // setup config with token - helper function
-export const tokenConfig = (auth) => {
-  // get token from state
-  const token = auth.token;
-
+export const tokenConfig = (token) => {
   // headers
   const config = {
     headers: {

@@ -1,11 +1,11 @@
-from .models import Blog, Tag, Podcast, YoutubeChannel
+from .models import Blog, Tag, Podcast, Youtube
 from rest_framework import viewsets, permissions
-from .serializers import BlogSerializer, TagSerializer, YoutubeChannelSerializer, PodcastSerializer
+from .serializers import BlogSerializer, TagSerializer, YoutubeSerializer, PodcastSerializer
 from drf_multiple_model.views import FlatMultipleModelAPIView
 
 class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
     serializer_class = TagSerializer
 
@@ -14,7 +14,7 @@ class TagViewSet(viewsets.ModelViewSet):
         
 class BlogViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
     serializer_class = BlogSerializer
 
@@ -26,7 +26,7 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 class PodcastViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
     serializer_class = PodcastSerializer
 
@@ -36,14 +36,14 @@ class PodcastViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class YoutubeChannelViewSet(viewsets.ModelViewSet):
+class YoutubeViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
-    serializer_class = YoutubeChannelSerializer
+    serializer_class = YoutubeSerializer
 
     def get_queryset(self):
-        return YoutubeChannel.objects.all()
+        return Youtube.objects.all()
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -52,5 +52,5 @@ class AllContentsView(FlatMultipleModelAPIView):
     querylist = [
         {'queryset': Blog.objects.all(), 'serializer_class': BlogSerializer},
         {'queryset': Podcast.objects.all(), 'serializer_class': PodcastSerializer},
-        {'queryset': YoutubeChannel.objects.all(), 'serializer_class': YoutubeChannelSerializer},
+        {'queryset': Youtube.objects.all(), 'serializer_class': YoutubeSerializer},
     ]

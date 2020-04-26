@@ -8,27 +8,27 @@ import { AuthProvider } from "./context/authContext";
 import { MessageProvider } from "./context/messageContext";
 import { ErrorProvider } from "./context/errorContext";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import CustomAlert from "./components/layout/CustomAlert";
 
 // Alert options
 const alertOptions = {
   timeout: 3000,
-  position: "top right",
+  position: "top center",
 };
 
 ReactDOM.render(
   <AuthProvider>
     <ErrorProvider>
-      <AlertProvider template={AlertTemplate} {...alertOptions}>
-        <MessageProvider>
-          <Theme>
+      <Theme>
+        <AlertProvider template={CustomAlert} {...alertOptions}>
+          <MessageProvider>
             <HashRouter>
               <GlobalStyle />
               <App />
             </HashRouter>
-          </Theme>
-        </MessageProvider>
-      </AlertProvider>
+          </MessageProvider>
+        </AlertProvider>
+      </Theme>
     </ErrorProvider>
   </AuthProvider>,
 

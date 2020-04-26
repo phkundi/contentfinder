@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const ContentDetailWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const ContentDetailContainer = styled.div`
   background-color: #fff;
   border-radius: 30px;

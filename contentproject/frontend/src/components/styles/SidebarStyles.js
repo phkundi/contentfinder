@@ -13,6 +13,10 @@ export const SidebarContainer = styled.div`
   }
 
   @media ${(props) => props.theme.device.laptopL} {
+    width: 17%;
+  }
+
+  @media ${(props) => props.theme.device.desktop} {
     width: 15%;
   }
 `;
@@ -22,6 +26,10 @@ export const SidebarLogo = styled.div`
   font-size: 1.4rem;
   font-weight: 600;
   color: ${(props) => props.theme.colors.primary};
+
+  & > a:hover {
+    text-decoration: none;
+  }
 `;
 
 export const SidebarNav = styled.nav`
@@ -62,6 +70,10 @@ export const SidebarButton = styled.button`
   border-color: ${(props) => props.theme.colors.primary};
   color: ${(props) => (props.outlined ? props.theme.colors.primary : "#fff")};
   justify-self: center;
+
+  &:focus {
+    outline: none;
+  }
 
   & > a {
     color: ${(props) => (props.outlined ? props.theme.colors.primary : "#fff")};

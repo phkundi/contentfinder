@@ -17,6 +17,11 @@ const theme = {
     muted: "rgba(0, 0, 0, 0.3)",
     red: "#EA4335",
   },
+  alertTypes: {
+    info: "blue",
+    success: "green",
+    error: "red",
+  },
   fonts: ["sans-serif", "Poppins"],
   fontSizes: {
     small: "1em",

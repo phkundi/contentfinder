@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import {
   SidebarContainer,
@@ -9,27 +9,29 @@ import {
   SidebarButton,
 } from "../styles/SidebarStyles";
 
-function Sidebar({ auth }) {
-  const SidebarAuthButtons = (
-    <div>
-      <SidebarButton>
-        <Link to="/login">Log In</Link>
-      </SidebarButton>
-      <SidebarButton outlined={true}>
-        <Link to="/register">Create Account</Link>
-      </SidebarButton>
-    </div>
-  );
-
-  const SidebarCreateButton = (
+const SidebarAuthButtons = (
+  <div>
     <SidebarButton>
-      <Link to="#">Share your content</Link>
+      <Link to="/login">Log In</Link>
     </SidebarButton>
-  );
+    <SidebarButton outlined={true}>
+      <Link to="/register">Create Account</Link>
+    </SidebarButton>
+  </div>
+);
 
+const SidebarCreateButton = (
+  <SidebarButton>
+    <Link to="/share">Share Content</Link>
+  </SidebarButton>
+);
+
+function Sidebar({ auth }) {
   return (
     <SidebarContainer>
-      <SidebarLogo>Content Finder</SidebarLogo>
+      <SidebarLogo>
+        <Link to="/">Content Finder</Link>
+      </SidebarLogo>
       <SidebarNav>
         <SidebarMenu>
           <SidebarListItem isHeading={true}>Menu</SidebarListItem>
@@ -45,11 +47,11 @@ function Sidebar({ auth }) {
           <SidebarListItem>
             <Link to="/youtube">Youtube</Link>
           </SidebarListItem>
+          {auth.isAuthenticated ? SidebarCreateButton : SidebarAuthButtons}
         </SidebarMenu>
-        {auth.isAuthenticated ? SidebarCreateButton : SidebarAuthButtons}
       </SidebarNav>
     </SidebarContainer>
   );
 }
 
-export default Sidebar;
+export default memo(Sidebar);

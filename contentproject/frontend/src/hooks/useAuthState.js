@@ -18,9 +18,10 @@ const useAuthState = () => {
   const { dispatchErrors } = useContext(ErrorContext);
 
   const loadUser = () => {
-    if (auth.isAuthenticated) {
+    const token = auth.token || localStorage.getItem("token");
+    if (token) {
       axiosInstance
-        .get("/auth/user/", tokenConfig(auth))
+        .get("/auth/user/", tokenConfig(token))
         .then((res) => {
           dispatchAuth({ type: USER_LOADED, payload: res.data });
         })
@@ -58,7 +59,7 @@ const useAuthState = () => {
 
   const logoutUser = () => {
     axiosInstance
-      .post("/auth/logout/", null, tokenConfig(auth))
+      .post("/auth/logout/", null, tokenConfig(auth.token))
       .then((res) => {
         dispatchAuth({ type: LOGOUT_SUCCESS });
       })

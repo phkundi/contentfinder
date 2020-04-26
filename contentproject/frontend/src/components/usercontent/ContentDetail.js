@@ -9,7 +9,7 @@ import {
   ContentDetailInfo,
   ContentDetailURL,
   ContentType,
-} from "../styles/contentDetailStyles";
+} from "../styles/ContentDetailStyles";
 
 function ContentDetail({ id, query, type }) {
   const [content, setContent] = useState("");
