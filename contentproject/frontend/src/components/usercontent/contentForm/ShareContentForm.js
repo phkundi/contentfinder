@@ -11,13 +11,17 @@ import { createMessage } from "../../../helpers/helpers";
 import useContentState from "../../../hooks/useContentState";
 
 function ShareContentForm(props) {
+  // To make success alert
   const { dispatchMessages } = useContext(MessageContext);
-  const [step, setStep] = useState(1);
+  // To keep track of which form to display
+  const [step, setStep] = useState(3);
+  // Input state
   const [contentType, setContentType] = useState("none");
   const [contentTitle, setContentTitle] = useInputState("");
   const [contentDescription, setContentDescription] = useInputState("");
   const [contentURL, setContentURL] = useInputState("");
   const [contentTags, setContentTags] = useState([]);
+  // Function to add content to database
   const { addContent } = useContentState();
 
   // Proceed to next step
@@ -30,6 +34,7 @@ function ShareContentForm(props) {
     setStep(step - 1);
   };
 
+  // Submit Content to DB
   const handleSubmit = () => {
     const content = {
       name: contentTitle,
@@ -40,12 +45,15 @@ function ShareContentForm(props) {
 
     if (contentType === "Blog") {
       addContent(content, "blogs");
+      redirectURL = `/blogs/${newContentResponse.id}`;
     } else if (contentType === "Podcast") {
       addContent(content, "podcasts");
+      redirectURL = `/podcasts/${newContentResponse.id}`;
     } else if (contentType === "Youtube Channel") {
       addContent(content, "youtube");
+      redirectURL = `/youtube/${newContentResponse.id}`;
     }
-
+    // Redirect User
     nextStep();
   };
 
@@ -110,7 +118,7 @@ function ShareContentForm(props) {
         />
       );
     case 6:
-      return <Redirect to="/" />;
+      return <Redirect to="/profile" />;
   }
 }
 

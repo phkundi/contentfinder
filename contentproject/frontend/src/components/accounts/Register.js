@@ -62,7 +62,6 @@ function Register() {
               value={email}
               onChange={setEmail}
               required
-              autoFocus
             />
           </FormGroup>
 
@@ -101,7 +100,7 @@ function Register() {
         </form>
         <hr className="my-4" />
         <p>
-          Already have an account? - <Link to="/register">Sign In</Link>
+          Already have an account? - <Link to="/login">Sign In</Link>
         </p>
       </FormContainer>
     );

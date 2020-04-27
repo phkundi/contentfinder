@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Blog, Tag, Podcast, Youtube
-from users.serializers import ProfileSerializer
+from .models import Blog, Tag, Podcast, Youtube, Like
 
 class CustomOwnerField(serializers.RelatedField):
     def to_representation(self, value):
@@ -13,6 +12,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class BlogSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
+    get_total_likes = serializers.ReadOnlyField()
     owner = CustomOwnerField(read_only=True)
     class Meta:
         model = Blog
@@ -31,3 +31,9 @@ class YoutubeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Youtube
         fields = "__all__"
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = "__all__"
+        

@@ -6,6 +6,7 @@ export const ErrorContext = createContext();
 const initialState = {
   msg: {},
   status: null,
+  show: false,
 };
 
 export function ErrorProvider(props) {

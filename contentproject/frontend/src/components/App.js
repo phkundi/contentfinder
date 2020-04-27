@@ -137,7 +137,7 @@ function App() {
         centerContentX={true}
         hideSearch={true}
       />
-      <PrivateRoute exact path="/user/:id" component={UserProfile} />
+      <PrivateRoute exact path="/profile" component={UserProfile} />
       {/* Catch All Route */}
       <Route
         path="/"

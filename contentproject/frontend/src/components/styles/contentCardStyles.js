@@ -31,6 +31,7 @@ export const CardImage = styled.div`
   background-size: cover;
   background-position: center;
   padding: 6rem;
+  position: relative;
 `;
 
 export const CardBody = styled.div`
@@ -112,5 +113,74 @@ export const TagBox = styled.button`
   &:hover {
     color: #000;
     border-color: #000;
+  }
+`;
+
+export const CardEditContainer = styled.div`
+  display: flex;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  box-shadow: ${(props) => props.theme.boxShadow.medium};
+`;
+
+export const CardEditButton = styled.button`
+  padding: 1rem 1.5rem;
+  border: none;
+  outline: none;
+  color: ${(props) => props.theme.colors[props.color]};
+  font-size: 1.3rem;
+  border-top-right-radius: 30px;
+
+  &:first-child {
+    border-bottom-left-radius: 30px;
+
+    &:hover {
+      border-top-right-radius: 0px;
+    }
+  }
+
+  & :hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+`;
+
+export const LikeBox = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  background-color: #fff;
+  box-shadow: ${(props) => props.theme.boxShadow.light};
+  cursor: pointer;
+
+  &:hover {
+    & > div > i {
+      transform: scale(1.1);
+    }
+  }
+`;
+
+export const LikeBoxChildContainer = styled.div`
+  position: relative;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+
+  & > i {
+    position: absolute;
+    font-size: 1.3rem;
+    color: ${(props) => props.theme.colors.red};
+  }
+
+  & > span {
+    color: ${(props) => props.theme.colors.muted};
+    font-weight: 500;
   }
 `;

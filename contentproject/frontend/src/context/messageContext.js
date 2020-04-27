@@ -5,6 +5,7 @@ export const MessageContext = createContext();
 
 const initialState = {
   message: {},
+  show: false,
 };
 
 export function MessageProvider(props) {

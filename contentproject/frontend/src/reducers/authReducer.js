@@ -7,10 +7,22 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
+  DELETE_USER,
 } from "./types";
 
 function authReducer(state, action) {
   switch (action.type) {
+    case USER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case USER_UPDATE_FAIL:
+      return {
+        ...state,
+      };
     case USER_LOADING:
       return {
         ...state,
@@ -36,6 +48,7 @@ function authReducer(state, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
+    case DELETE_USER:
       localStorage.removeItem("token");
       return {
         ...state,

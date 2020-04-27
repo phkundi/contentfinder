@@ -12,14 +12,15 @@ const UserInfoHeading = styled.h3`
 `;
 
 const EditInfo = styled.button`
-  color: ${(props) => (props.isEditing ? "green" : props.theme.colors.muted)};
+  color: ${(props) =>
+    props.isEditing ? props.theme.colors.red : props.theme.colors.muted};
   font-size: 1rem;
   margin-left: 1rem;
   background-color: transparent;
   border: none;
   &:hover {
     color: ${(props) =>
-      props.isEditing ? "lightgreen" : props.theme.colors.primary};
+      props.isEditing ? "darkred" : props.theme.colors.primary};
   }
   &:focus {
     outline: none;
@@ -77,7 +78,7 @@ function UserInfoSection({ width, heading, value, setValue, textArea }) {
         {heading}{" "}
         {isEditing ? (
           <EditInfo onClick={toggleIsEditing} isEditing={isEditing}>
-            Save
+            Close
           </EditInfo>
         ) : (
           <EditInfo onClick={toggleIsEditing} isEditing={isEditing}>

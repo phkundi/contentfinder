@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import Theme from "./context/ThemeContext";
 import GlobalStyle from "./components/styles/GlobalStyle";
 import App from "./components/App";
@@ -17,20 +19,19 @@ const alertOptions = {
 };
 
 ReactDOM.render(
-  <AuthProvider>
-    <ErrorProvider>
-      <Theme>
-        <AlertProvider template={CustomAlert} {...alertOptions}>
+  <Theme>
+    <AlertProvider template={CustomAlert} {...alertOptions}>
+      <AuthProvider>
+        <ErrorProvider>
           <MessageProvider>
             <HashRouter>
               <GlobalStyle />
               <App />
             </HashRouter>
           </MessageProvider>
-        </AlertProvider>
-      </Theme>
-    </ErrorProvider>
-  </AuthProvider>,
-
+        </ErrorProvider>
+      </AuthProvider>
+    </AlertProvider>
+  </Theme>,
   document.getElementById("root")
 );

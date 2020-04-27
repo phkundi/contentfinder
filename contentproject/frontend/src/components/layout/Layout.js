@@ -9,7 +9,7 @@ import {
   ContentContainer,
 } from "../styles/LayoutStyles";
 
-export default function Layout(props) {
+function Layout(props) {
   const { loadUser, auth, logoutUser } = useAuthState();
 
   useEffect(() => {
@@ -38,3 +38,5 @@ export default function Layout(props) {
     </LayoutContainer>
   );
 }
+
+export default Layout;

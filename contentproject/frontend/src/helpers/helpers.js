@@ -20,13 +20,13 @@ export const tokenConfig = (token) => {
 export const createMessage = (msg) => {
   return {
     type: CREATE_MESSAGE,
-    payload: msg,
+    payload: { ...msg, show: true },
   };
 };
 
 export const returnErrors = (msg, status) => {
   return {
     type: GET_ERRORS,
-    payload: { msg, status },
+    payload: { msg, status, show: false },
   };
 };

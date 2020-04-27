@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,6 +10,7 @@ class Tag(models.Model):
         return self.name
 
 class Blog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField()
     tags = models.ManyToManyField(Tag, blank=True, related_name="blogs")
@@ -18,8 +20,12 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_total_likes(self):
+        return self.likes.count()
 
 class Podcast(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField()
     tags = models.ManyToManyField(Tag, blank=True, related_name="podcasts")
@@ -29,8 +35,12 @@ class Podcast(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_total_likes(self):
+        return self.likes.count()
 
 class Youtube(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField()
     tags = models.ManyToManyField(Tag, blank=True, related_name="youtube_channels")
@@ -40,3 +50,16 @@ class Youtube(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_total_likes(self):
+        return self.likes.count()
+
+class Like(models.Model):
+    user = models.ForeignKey(User, related_name="likes", on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, related_name="likes", blank=True, null=True, on_delete=models.CASCADE)
+    podcast = models.ForeignKey(Podcast, related_name="likes", blank=True, null=True, on_delete=models.CASCADE)
+    youtube = models.ForeignKey(Youtube, related_name="likes", blank=True, null=True, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Like by {self.user.username}'

@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ContentCard from "./ContentCard";
-import { axiosInstance } from "../../axiosInstance";
 import FilterBar from "./FilterBar";
 import {
   ListPageWrapper,
   ListContainer,
   ContentListHeading,
 } from "../styles/ContentListStyles";
+import useContentState from "../../hooks/useContentState";
 
 function ContentList({ type, query, heading }) {
   const [content, setContent] = useState([]);
   const [filter, setFilter] = useState(null);
+  const { getContent } = useContentState();
 
   useEffect(() => {
-    const getContent = () => {
-      axiosInstance.get(`content/${query}/`).then((res) => {
-        if (filter) {
-          const filteredContent = res.data.filter((content) =>
-            content.tags.includes(filter)
-          );
-          setContent(filteredContent);
-        } else {
-          setContent(res.data);
-        }
-      });
-    };
-    getContent();
+    getContent(query, filter, setContent);
   }, [query, filter]);
 
   if (content) {

@@ -1,4 +1,4 @@
-import { GET_ERRORS } from "./types";
+import { GET_ERRORS, CLEAR_ERRORS } from "./types";
 
 function errorReducer(state, action) {
   switch (action.type) {
@@ -6,6 +6,13 @@ function errorReducer(state, action) {
       return {
         msg: action.payload.msg,
         status: action.payload.status,
+        show: true,
+      };
+    case CLEAR_ERRORS:
+      return {
+        show: false,
+        msg: {},
+        status: null,
       };
 
     default:

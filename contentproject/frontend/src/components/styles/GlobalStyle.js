@@ -10,5 +10,9 @@ const GlobalStyle = createGlobalStyle`
   a {
     color: ${(props) => props.theme.colors.primary}
   }
+
+  button:focus {
+    outline: none;
+  }
 `;
 export default GlobalStyle;

@@ -1,13 +1,13 @@
-import { CREATE_MESSAGE, ADD_CONTENT } from "./types";
+import { CREATE_MESSAGE, CLEAR_MESSAGES } from "./types";
 
 function messageReducer(state, action) {
   switch (action.type) {
     case CREATE_MESSAGE:
       return (state = action.payload);
-    case ADD_CONTENT:
-      console.log(action.payload);
+
+    case CLEAR_MESSAGES:
       return {
-        ...state,
+        show: false,
       };
     default:
       return state;

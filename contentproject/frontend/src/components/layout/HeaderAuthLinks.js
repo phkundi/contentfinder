@@ -22,7 +22,7 @@ function HeaderAuthLinks({ user, logout, toggleShowActions, showActions }) {
       <UserDropDownContainer show={showActions} id="container">
         <UserDropDownList>
           <UserDropDownListItem>
-            <Link to={`/user/${user.id}`}>Profile</Link>
+            <Link to={`/profile`}>Profile</Link>
           </UserDropDownListItem>
           <UserDropDownListItem>
             <Link to="#" onClick={logout}>

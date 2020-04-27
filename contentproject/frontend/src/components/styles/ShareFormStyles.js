@@ -145,3 +145,31 @@ export const ShareFormTag = styled.span`
     background-color: ${(props) => (props.active ? "" : "rgba(0, 0, 0, 0.04)")};
   }
 `;
+
+export const ShareFormPrependContainer = styled.div`
+  display: flex;
+`;
+
+export const ShareFormPrepend = styled.div`
+  padding: 1.3rem;
+  padding-right: 0.5rem;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-right: none;
+`;
+
+export const ShareFormPrependedInput = styled.input`
+  border-radius: 2rem;
+  border-top-left-radius: 0rem;
+  border-bottom-left-radius: 0rem;
+  width: 100%;
+  padding: 1.3rem;
+  padding-left: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-left: none;
+
+  &:focus {
+    outline: none;
+  }
+`;

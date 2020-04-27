@@ -2,10 +2,11 @@ import React, { Fragment, useEffect, useContext } from "react";
 import { useAlert } from "react-alert";
 import { ErrorContext } from "../../context/errorContext";
 import { MessageContext } from "../../context/messageContext";
+import { CLEAR_MESSAGES, CLEAR_ERRORS } from "../../reducers/types";
 
 function Alerts() {
-  const { errors } = useContext(ErrorContext);
-  const { messages } = useContext(MessageContext);
+  const { errors, dispatchErrors } = useContext(ErrorContext);
+  const { messages, dispatchMessages } = useContext(MessageContext);
   const alert = useAlert();
 
   useEffect(() => {
@@ -27,7 +28,11 @@ function Alerts() {
     if (errors.msg.url) {
       alert.error(errors.msg.url.join());
     }
-  }, [errors]);
+    // Clear error state to prevent alert from showing up multiple times
+    if (Object.keys(errors).length > 0) {
+      dispatchErrors({ type: CLEAR_ERRORS });
+    }
+  }, [errors.show]);
 
   useEffect(() => {
     if (messages.passwordsNotMatch) {
@@ -51,7 +56,20 @@ function Alerts() {
     if (messages.contentAdded) {
       alert.success(messages.contentAdded);
     }
-  }, [messages]);
+    if (messages.userDeleted) {
+      alert.success(messages.userDeleted);
+    }
+    if (messages.contentDeleted) {
+      alert.success(messages.contentDeleted);
+    }
+    if (messages.userUpdated) {
+      alert.success(messages.userUpdated);
+    }
+    // Clear error state to prevent alert from showing up multiple times
+    if (Object.keys(messages).length > 0) {
+      dispatchMessages({ type: CLEAR_MESSAGES });
+    }
+  }, [messages.show]);
 
   return <Fragment />;
 }

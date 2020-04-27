@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, ProfileSerializer
 from .models import Profile
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -31,20 +34,46 @@ class LoginAPI(generics.GenericAPIView):
             "token": AuthToken.objects.create(user)[1]
         })
 
-# Get User API
-class UserAPI(generics.RetrieveUpdateAPIView):
+# Get and Update User API
+class UserAPI(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserSerializer
+
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.serializer_class(request.user)
         return Response(serializer.data)
     
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        user.delete()
+        return Response(None)
+    
     def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        user_data = request.data['user']
+        profile_data = request.data['profile']
+
+        # make sure user enters a email address
+        if not user_data["email"]:
+            response = {
+                "email": ["This field may not be blank"]
+
+            }
+            return JsonResponse(response, status=502)
+
+        user_serializer = self.serializer_class(request.user, data=user_data, partial=True)
+        user_serializer.is_valid(raise_exception=True)
+        user_serializer.save()
+
+        if profile_data:
+            profile_serializer_class = ProfileSerializer
+            user_profile = request.user.profile
+            profile_serializer = ProfileSerializer(user_profile, data=profile_data, partial=True)
+            profile_serializer.is_valid(raise_exception=True)
+            profile_serializer.save()
+        
+        # response = {'user': user_serializer.data, 'profile': profile_serializer.data}
+        return Response(user_serializer.data)
 
 # UserProfile API
 class ProfileAPI(generics.RetrieveAPIView):
