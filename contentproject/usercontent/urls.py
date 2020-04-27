@@ -1,17 +1,10 @@
 from rest_framework import routers
-from .api import BlogViewSet, TagViewSet, PodcastViewSet, YoutubeViewSet, AllContentsView, UserContentView, LikeViewSet
-from django.urls import path
+from .api import TagViewSet, UserContentView, LikeViewSet, PostViewSet
 
 router = routers.DefaultRouter()
-router.register('blogs', BlogViewSet, 'blogs'),
 router.register('tags', TagViewSet, 'tags'),
-router.register('podcasts', PodcastViewSet, 'podcasts'),
-router.register('youtube', YoutubeViewSet, 'youtube'),
-router.register('likes', LikeViewSet, 'likes')
+router.register('likes', LikeViewSet, 'likes'),
+router.register('posts', PostViewSet, 'posts'),
+router.register('user', UserContentView, 'user-posts')
 
-urlpatterns = [
-    path('all/', AllContentsView.as_view(), name="all"),
-    path('user/', UserContentView.as_view(), name="user-content")
-] 
-
-urlpatterns += router.urls
+urlpatterns = router.urls

@@ -18,27 +18,37 @@ import {
   LikeBoxChildContainer,
 } from "../styles/ContentCardStyles";
 import CardOwnerActions from "./CardOwnerActions";
+import { contentSlugs } from "../../constants";
 
-function ContentCard({ content, type, editable, handleEdit, handleDelete }) {
+function ContentCard({ content, editable, handleEdit, handleDelete }) {
+  const {
+    id,
+    content_type,
+    name,
+    description,
+    owner,
+    tags,
+    get_total_likes,
+  } = content;
+
   return (
     <Card>
       <div>
         <CardImage source="https://source.unsplash.com/random">
           <LikeBox>
             <LikeBoxChildContainer>
-              {/* <i class="fas fa-heart"></i> */}
-              <i class="far fa-heart"></i>
+              {/* <i className="fas fa-heart"></i> */}
+              <i className="far fa-heart"></i>
             </LikeBoxChildContainer>
             <LikeBoxChildContainer>
-              <span>0</span>
+              <span>{get_total_likes}</span>
             </LikeBoxChildContainer>
           </LikeBox>
           {editable ? (
             <CardOwnerActions
-              id={content.id}
+              id={id}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
-              query={content.slug}
             />
           ) : (
             ""
@@ -46,19 +56,19 @@ function ContentCard({ content, type, editable, handleEdit, handleDelete }) {
         </CardImage>
 
         <CardBody>
-          <ContentType>{type ? type : content.type}</ContentType>
+          <ContentType>{content_type}</ContentType>
           <CardTitle>
-            <Link to={`/${content.slug}/${content.id}`}>{content.name}</Link>
+            <Link to={`/${contentSlugs[content_type]}/${id}`}>{name}</Link>
           </CardTitle>
-          <CardSubtitle>By {content.owner.username}</CardSubtitle>
+          <CardSubtitle>By {owner.username}</CardSubtitle>
           <CardDesription>
-            {content.description.substring(0, 100) + " ... "}
+            {description.substring(0, 100) + " ... "}
           </CardDesription>
         </CardBody>
       </div>
       <CardFooterBottomWrapper>
         <CardViewButton>
-          <Link to={`/${content.slug}/${content.id}`}>
+          <Link to={`/${contentSlugs[content_type]}/${id}`}>
             See Details <i className="fas fa-angle-double-right"></i>
           </Link>
         </CardViewButton>
@@ -66,7 +76,7 @@ function ContentCard({ content, type, editable, handleEdit, handleDelete }) {
         <CardFooter>
           <CardTags>
             <FooterText>Tags: </FooterText>
-            {content.tags.map((tag, i) => (
+            {tags.map((tag, i) => (
               <TagBox key={i}>{tag}</TagBox>
             ))}
           </CardTags>

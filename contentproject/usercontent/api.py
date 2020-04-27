@@ -1,7 +1,6 @@
-from .models import Blog, Tag, Podcast, Youtube, Like
+from .models import Tag, Like, Post
 from rest_framework import viewsets, permissions
-from .serializers import BlogSerializer, TagSerializer, YoutubeSerializer, PodcastSerializer, LikeSerializer
-from drf_multiple_model.views import FlatMultipleModelAPIView
+from .serializers import TagSerializer, LikeSerializer, PostSerializer
 
 class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -23,56 +22,29 @@ class LikeViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class PostViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        ##### NEED TO CHANGE
+        permissions.AllowAny
+    ]
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        content_type = self.request.query_params.get('content', None)
+        if content_type is not None:
+            queryset = queryset.filter(content_type=content_type)
+        return queryset
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
         
-class BlogViewSet(viewsets.ModelViewSet):
+class UserContentView(viewsets.ModelViewSet):
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
-    ]
-    serializer_class = BlogSerializer
-
-    def get_queryset(self):
-        return Blog.objects.all()
-    
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-class PodcastViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
-    ]
-    serializer_class = PodcastSerializer
-
-    def get_queryset(self):
-        return Podcast.objects.all()
-    
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-class YoutubeViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
-    ]
-    serializer_class = YoutubeSerializer
-
-    def get_queryset(self):
-        return Youtube.objects.all()
-    
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-class AllContentsView(FlatMultipleModelAPIView):
-    querylist = [
-        {'queryset': Blog.objects.all(), 'serializer_class': BlogSerializer},
-        {'queryset': Podcast.objects.all(), 'serializer_class': PodcastSerializer},
-        {'queryset': Youtube.objects.all(), 'serializer_class': YoutubeSerializer},
-    ]
-
-class UserContentView(FlatMultipleModelAPIView):
-
-    def get_querylist(self):
-        querylist = [
-            {'queryset': Blog.objects.filter(owner=self.request.user), 'serializer_class': BlogSerializer},
-            {'queryset': Podcast.objects.filter(owner=self.request.user), 'serializer_class': PodcastSerializer},
-            {'queryset': Youtube.objects.filter(owner=self.request.user), 'serializer_class': YoutubeSerializer},
+            permissions.IsAuthenticatedOrReadOnly
         ]
-        return querylist
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        return Post.objects.filter(owner=self.request.user)

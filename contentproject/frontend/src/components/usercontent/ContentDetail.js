@@ -11,11 +11,12 @@ import {
   ContentType,
 } from "../styles/ContentDetailStyles";
 
-function ContentDetail({ id, query, type }) {
+function ContentDetail({ id }) {
   const [content, setContent] = useState("");
+  const { content_type, name, owner, url, description } = content;
 
   useEffect(() => {
-    axiosInstance.get(`content/${query}/${id}`).then((res) => {
+    axiosInstance.get(`content/posts/${id}`).then((res) => {
       setContent(res.data);
     });
   }, []);
@@ -25,25 +26,25 @@ function ContentDetail({ id, query, type }) {
       <ContentDetailContainer>
         <ContentDetailImage source="https://source.unsplash.com/random" />
         <ContentDetailBody>
-          <ContentType>{type}</ContentType>
-          <ContentDetailTitle>{content.name}</ContentDetailTitle>
+          <ContentType>{content_type}</ContentType>
+          <ContentDetailTitle>{name}</ContentDetailTitle>
 
           <ContentDetailSubtitle muted={true}>
-            By {content.owner.username}
+            By {owner.username}
           </ContentDetailSubtitle>
-          <ContentDetailURL href={content.url}>
-            {content.url.replace(/(^\w+:|^)\/\//, "")}
+          <ContentDetailURL href={url}>
+            {url.replace(/(^\w+:|^)\/\//, "")}
           </ContentDetailURL>
 
           <ContentDetailInfo>
             <ContentDetailSubtitle>Description</ContentDetailSubtitle>
-            <p>{content.description}</p>
-            {content.owner.bio ? (
+            <p>{description}</p>
+            {owner.bio ? (
               <>
                 <ContentDetailSubtitle marginTop={true}>
-                  About {content.owner.username}
+                  About {owner.username}
                 </ContentDetailSubtitle>
-                <p>{content.owner.bio}</p>
+                <p>{owner.bio}</p>
               </>
             ) : (
               ""

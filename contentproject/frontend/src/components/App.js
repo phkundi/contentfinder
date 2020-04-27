@@ -45,7 +45,7 @@ function App() {
         path="/blogs"
         render={() => (
           <Layout>
-            <ContentList query="blogs" type="Blog" heading="Blogs" />
+            <ContentList type="Blog" heading="Blogs" />
           </Layout>
         )}
       />
@@ -54,11 +54,7 @@ function App() {
         path="/blogs/:id"
         render={(routeProps) => (
           <Layout goBack="blogs">
-            <ContentDetail
-              id={routeProps.match.params.id}
-              query="blogs"
-              type="Blog"
-            />
+            <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
       />
@@ -67,7 +63,7 @@ function App() {
         path="/podcasts"
         render={() => (
           <Layout>
-            <ContentList query="podcasts" type="Podcast" heading="Podcasts" />
+            <ContentList type="Podcast" heading="Podcasts" />
           </Layout>
         )}
       />
@@ -76,11 +72,7 @@ function App() {
         path="/podcasts/:id"
         render={(routeProps) => (
           <Layout goBack="podcasts">
-            <ContentDetail
-              id={routeProps.match.params.id}
-              query="podcasts"
-              type="Podcast"
-            />
+            <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
       />
@@ -89,11 +81,7 @@ function App() {
         path="/youtube"
         render={() => (
           <Layout>
-            <ContentList
-              query="youtube"
-              type="Youtube"
-              heading="Youtube Channels"
-            />
+            <ContentList type="Youtube" heading="Youtube Channels" />
           </Layout>
         )}
       />
@@ -102,11 +90,7 @@ function App() {
         path="/youtube/:id"
         render={(routeProps) => (
           <Layout goBack="youtube">
-            <ContentDetail
-              id={routeProps.match.params.id}
-              query="youtube"
-              type="Youtube"
-            />
+            <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
       />

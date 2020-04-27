@@ -9,7 +9,6 @@ import {
   ShareFormContainer,
   ShareFormTitle,
 } from "../../styles/ShareFormStyles";
-import Alerts from "../../layout/Alerts";
 
 function SCFContentType({
   nextStep,
