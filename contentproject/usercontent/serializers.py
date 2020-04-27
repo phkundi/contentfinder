@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Blog, Tag, Podcast, Youtube, Like
+from .models import Tag, Like, Post
 
 class CustomOwnerField(serializers.RelatedField):
     def to_representation(self, value):
@@ -10,30 +10,17 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = "__all__"
 
-class BlogSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
-    get_total_likes = serializers.ReadOnlyField()
-    owner = CustomOwnerField(read_only=True)
-    class Meta:
-        model = Blog
-        fields = "__all__"
-
-class PodcastSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
-    owner = CustomOwnerField(read_only=True)
-    class Meta:
-        model = Podcast
-        fields = "__all__"
-
-class YoutubeSerializer(serializers.ModelSerializer):
-    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
-    owner = CustomOwnerField(read_only=True)
-    class Meta:
-        model = Youtube
-        fields = "__all__"
-
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
+
+class PostSerializer(serializers.ModelSerializer):
+    tags = serializers.SlugRelatedField(many=True, slug_field="name", queryset=Tag.objects.all())
+    get_total_likes = serializers.ReadOnlyField()
+    owner = CustomOwnerField(read_only=True)
+    class Meta:
+        model = Post
+        fields = "__all__"
+
         

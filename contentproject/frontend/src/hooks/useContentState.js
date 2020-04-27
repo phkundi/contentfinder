@@ -12,9 +12,9 @@ const useContentState = () => {
   const { auth } = useContext(AuthContext);
 
   // Add new Content from Form
-  const addContent = (content, contentQuery) => {
+  const addContent = (content) => {
     axiosInstance
-      .post(`/content/${contentQuery}/`, content, tokenConfig(auth.token))
+      .post(`/content/posts/`, content, tokenConfig(auth.token))
       .then((res) => {
         dispatchMessages({ type: ADD_CONTENT, payload: res.data });
         dispatchMessages(
@@ -27,9 +27,9 @@ const useContentState = () => {
   };
 
   // Delete Content
-  const deleteContent = (id, contentQuery) => {
+  const deleteContent = (id) => {
     axiosInstance
-      .delete(`/content/${contentQuery}/${id}`, tokenConfig(auth.token))
+      .delete(`/content/posts/${id}`, tokenConfig(auth.token))
       .then((res) => {
         dispatchMessages(
           createMessage({ contentDeleted: "Deleted successfully" })
@@ -48,17 +48,21 @@ const useContentState = () => {
   };
 
   // Get all content matching filter & type
-  const getContent = (query, filter, setState) => {
-    axiosInstance.get(`content/${query}/`).then((res) => {
-      if (filter) {
-        const filteredContent = res.data.filter((content) =>
-          content.tags.includes(filter)
-        );
-        setState(filteredContent);
-      } else {
-        setState(res.data);
-      }
-    });
+  const getContent = async (type, filter, setState) => {
+    let res = null;
+    if (type) {
+      res = await axiosInstance.get(`content/posts/?content=${type}`);
+    } else {
+      res = await axiosInstance.get("content/posts/");
+    }
+    if (filter) {
+      const filteredContent = res.data.filter((content) =>
+        content.tags.includes(filter)
+      );
+      setState(filteredContent);
+    } else {
+      setState(res.data);
+    }
   };
 
   return { addContent, getUserContent, getContent, deleteContent };

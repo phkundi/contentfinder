@@ -8,14 +8,14 @@ import {
 } from "../styles/ContentListStyles";
 import useContentState from "../../hooks/useContentState";
 
-function ContentList({ type, query, heading }) {
+function ContentList({ type, heading }) {
   const [content, setContent] = useState([]);
   const [filter, setFilter] = useState(null);
   const { getContent } = useContentState();
 
   useEffect(() => {
-    getContent(query, filter, setContent);
-  }, [query, filter]);
+    getContent(type, filter, setContent);
+  }, [type, filter]);
 
   if (content) {
     return (
@@ -25,7 +25,7 @@ function ContentList({ type, query, heading }) {
           <ContentListHeading>{heading}</ContentListHeading>
           <ListContainer>
             {content.map((content, i) => (
-              <ContentCard key={i} content={content} type={type} />
+              <ContentCard key={i} content={content} />
             ))}
           </ListContainer>
         </div>

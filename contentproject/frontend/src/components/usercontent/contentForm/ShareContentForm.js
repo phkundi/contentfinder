@@ -14,7 +14,7 @@ function ShareContentForm(props) {
   // To make success alert
   const { dispatchMessages } = useContext(MessageContext);
   // To keep track of which form to display
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   // Input state
   const [contentType, setContentType] = useState("none");
   const [contentTitle, setContentTitle] = useInputState("");
@@ -34,6 +34,12 @@ function ShareContentForm(props) {
     setStep(step - 1);
   };
 
+  const contentTypes = {
+    Blog: "Blog",
+    Podcast: "Podcast",
+    "Youtube Channel": "Youtube",
+  };
+
   // Submit Content to DB
   const handleSubmit = () => {
     const content = {
@@ -41,18 +47,10 @@ function ShareContentForm(props) {
       description: contentDescription,
       url: contentURL,
       tags: contentTags,
+      content_type: contentTypes[contentType],
     };
 
-    if (contentType === "Blog") {
-      addContent(content, "blogs");
-      redirectURL = `/blogs/${newContentResponse.id}`;
-    } else if (contentType === "Podcast") {
-      addContent(content, "podcasts");
-      redirectURL = `/podcasts/${newContentResponse.id}`;
-    } else if (contentType === "Youtube Channel") {
-      addContent(content, "youtube");
-      redirectURL = `/youtube/${newContentResponse.id}`;
-    }
+    addContent(content);
     // Redirect User
     nextStep();
   };
