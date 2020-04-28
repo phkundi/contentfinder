@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import ContentCard from "../../usercontent/ContentCard";
 import { ListContainer } from "../../styles/ContentListStyles";
 import useContentState from "../../../hooks/useContentState";

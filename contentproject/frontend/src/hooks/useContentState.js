@@ -1,22 +1,24 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { MessageContext } from "../context/messageContext";
+import { ContentContext } from "../context/contentContext";
 import { ErrorContext } from "../context/errorContext";
 import { tokenConfig, createMessage, returnErrors } from "../helpers/helpers";
 import { axiosInstance } from "../axiosInstance";
-import { ADD_CONTENT } from "../reducers/types";
+import { ADD_CONTENT, DELETE_CONTENT } from "../reducers/types";
 
 const useContentState = () => {
   const { dispatchMessages } = useContext(MessageContext);
   const { dispatchErrors } = useContext(ErrorContext);
   const { auth } = useContext(AuthContext);
+  const { content, dispatchContent } = useContext(ContentContext);
 
   // Add new Content from Form
   const addContent = (content) => {
     axiosInstance
       .post(`/content/posts/`, content, tokenConfig(auth.token))
       .then((res) => {
-        dispatchMessages({ type: ADD_CONTENT, payload: res.data });
+        dispatchContent({ type: ADD_CONTENT, payload: res.data });
         dispatchMessages(
           createMessage({ contentAdded: "Submitted successfully" })
         );
@@ -31,6 +33,7 @@ const useContentState = () => {
     axiosInstance
       .delete(`/content/posts/${id}`, tokenConfig(auth.token))
       .then((res) => {
+        dispatchContent({ type: DELETE_CONTENT, payload: id });
         dispatchMessages(
           createMessage({ contentDeleted: "Deleted successfully" })
         );
@@ -63,6 +66,55 @@ const useContentState = () => {
     } else {
       setState(res.data);
     }
+  };
+
+  const getInfiniteContent = async ({
+    type = null,
+    filter = null,
+    setContent,
+    content,
+    limit,
+    offset,
+    setOffset,
+    setHasMore,
+    setError,
+    setLoading,
+  }) => {
+    let res = null;
+    if (type) {
+      res = await axiosInstance.get(
+        `content/posts-infinite/?limit=${limit}&offset=${offset}&content=${type}`
+      );
+    } else {
+      res = await axiosInstance.get(
+        `content/posts-infinite/?limit=${limit}&offset=${offset}`
+      );
+    }
+
+    try {
+      const newContent = res.data.content;
+
+      if (filter) {
+        const filteredContent = newContent.filter((content) =>
+          content.tags.includes(filter)
+        );
+        setContent(...content, ...filteredContent);
+      } else {
+        setContent([...content, ...newContent]);
+      }
+
+      setHasMore(res.data.has_more);
+      setOffset(offset + limit);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const filterContent = ({ filter, content, setContent }) => {
+    const filteredContent = content.filter((c) => c.tags.includes(filter));
+    setContent(filteredContent);
   };
 
   // Get all user likes - not currently used anywhere
@@ -120,11 +172,13 @@ const useContentState = () => {
     addContent,
     getUserContent,
     getContent,
+    getInfiniteContent,
     deleteContent,
     getUserLike,
     deleteLike,
     addLike,
     getLikedContent,
+    filterContent,
   };
 };
 

@@ -7,6 +7,7 @@ import Theme from "./context/ThemeContext";
 import GlobalStyle from "./components/styles/GlobalStyle";
 import App from "./components/App";
 import { AuthProvider } from "./context/authContext";
+import { ContentProvider } from "./context/contentContext";
 import { MessageProvider } from "./context/messageContext";
 import { ErrorProvider } from "./context/errorContext";
 import { Provider as AlertProvider } from "react-alert";
@@ -24,10 +25,12 @@ ReactDOM.render(
       <AuthProvider>
         <ErrorProvider>
           <MessageProvider>
-            <HashRouter>
-              <GlobalStyle />
-              <App />
-            </HashRouter>
+            <ContentProvider>
+              <HashRouter>
+                <GlobalStyle />
+                <App />
+              </HashRouter>
+            </ContentProvider>
           </MessageProvider>
         </ErrorProvider>
       </AuthProvider>

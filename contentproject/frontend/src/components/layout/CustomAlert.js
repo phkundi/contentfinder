@@ -8,6 +8,7 @@ const AlertContainer = styled.div`
   box-shadow: ${(props) => props.theme.boxShadow.medium};
   display: flex;
   justify-content: center;
+  z-index: 2000;
 `;
 
 const AlertCloseButton = styled.button`
