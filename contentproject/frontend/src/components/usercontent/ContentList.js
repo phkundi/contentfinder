@@ -3,6 +3,7 @@ import ContentCard from "./ContentCard";
 import FilterBar from "./FilterBar";
 import {
   ListPageWrapper,
+  ContentListWrapper,
   ListContainer,
   ContentListHeading,
 } from "../styles/ContentListStyles";
@@ -14,21 +15,21 @@ function ContentList({ type, heading }) {
   const { getContent } = useContentState();
 
   useEffect(() => {
-    getContent(type, filter, setContent);
+    getContent({ type, filter, setState: setContent });
   }, [type, filter]);
 
   if (content) {
     return (
       <ListPageWrapper>
         <FilterBar setFilter={setFilter} filter={filter} />
-        <div>
+        <ContentListWrapper>
           <ContentListHeading>{heading}</ContentListHeading>
           <ListContainer>
-            {content.map((content, i) => (
-              <ContentCard key={i} content={content} />
+            {content.map((content) => (
+              <ContentCard key={content.id} content={content} />
             ))}
           </ListContainer>
-        </div>
+        </ContentListWrapper>
       </ListPageWrapper>
     );
   } else {

@@ -5,7 +5,7 @@ import {
   UserDropDownContainer,
   UserDropDownList,
   UserDropDownListItem,
-} from "../styles/HeaderStyles";
+} from "../../styles/DesktopHeaderStyles";
 import Avatar from "react-avatar";
 
 function HeaderAuthLinks({ user, logout, toggleShowActions, showActions }) {

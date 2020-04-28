@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import Header from "./Header";
+import Header from "./header/Header";
 import Alerts from "./Alerts";
 import useAuthState from "../../hooks/useAuthState";
+import useToggleState from "../../hooks/useToggleState";
+import useInputState from "../../hooks/useInputState";
+import SearchResults from "./SearchResults";
 import {
   LayoutContainer,
   MainContainer,
@@ -11,6 +14,8 @@ import {
 
 function Layout(props) {
   const { loadUser, auth, logoutUser } = useAuthState();
+  const [searching, setSearching] = useToggleState(false);
+  const [searchQuery, setSearchQuery, resetSearchQuery] = useInputState("");
 
   useEffect(() => {
     loadUser();
@@ -20,19 +25,26 @@ function Layout(props) {
     <LayoutContainer>
       <Sidebar auth={auth} />
       <MainContainer>
-        {props.hideHeader ? (
-          ""
-        ) : (
-          <Header
-            auth={auth}
-            logout={logoutUser}
-            goBack={props.goBack}
-            hideSearch={props.hideSearch}
-          />
-        )}
+        <Header
+          hideHeader={props.hideHeader}
+          auth={auth}
+          logout={logoutUser}
+          goBack={props.goBack}
+          hideSearch={props.hideSearch}
+          searching={searching}
+          setSearching={setSearching}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          resetSearchQuery={resetSearchQuery}
+        />
+
         <Alerts />
-        <ContentContainer centerContentX={props.centerContentX}>
-          {props.children}
+        <ContentContainer noMarginTop={props.noMarginTop}>
+          {searching ? (
+            <SearchResults searchQuery={searchQuery} />
+          ) : (
+            props.children
+          )}
         </ContentContainer>
       </MainContainer>
     </LayoutContainer>

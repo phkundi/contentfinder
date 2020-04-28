@@ -48,7 +48,7 @@ const useContentState = () => {
   };
 
   // Get all content matching filter & type
-  const getContent = async (type, filter, setState) => {
+  const getContent = async ({ type = null, filter = null, setState }) => {
     let res = null;
     if (type) {
       res = await axiosInstance.get(`content/posts/?content=${type}`);
@@ -65,7 +65,67 @@ const useContentState = () => {
     }
   };
 
-  return { addContent, getUserContent, getContent, deleteContent };
+  // Get all user likes - not currently used anywhere
+  const getLikedContent = (setState) => {
+    axiosInstance.get(`content/likes/?user_id=${auth.user.id}`).then((res) => {
+      setState(res.data);
+    });
+  };
+
+  // Get info about like instance if user liked the post
+  const getUserLike = (postID, setLike) => {
+    axiosInstance.get(`content/likes/?post_id=${postID}`).then((res) => {
+      for (let like in res.data) {
+        if (like["user"] !== auth.user["id"]) {
+          setLike({
+            liked: true,
+            likeID: res.data[like].id,
+            totalLikes: res.data.length,
+          });
+        } else {
+          setLike({ liked: false, likeID: null, totalLikes: res.data.length });
+        }
+      }
+    });
+  };
+
+  // Add Like
+  const addLike = (postID, setLike, totalLikes) => {
+    const body = JSON.stringify({
+      post: postID,
+      user: auth.user.id,
+    });
+
+    axiosInstance
+      .post("content/likes/", body, tokenConfig(auth.token))
+      .then((res) => {
+        setLike({
+          liked: true,
+          likeID: res.data.id,
+          totalLikes: totalLikes + 1,
+        });
+      });
+  };
+
+  // Delete Like
+  const deleteLike = (id, setLike, totalLikes) => {
+    axiosInstance
+      .delete(`content/likes/${id}`, tokenConfig(auth.token))
+      .then((res) => {
+        setLike({ liked: false, likeID: null, totalLikes: totalLikes - 1 });
+      });
+  };
+
+  return {
+    addContent,
+    getUserContent,
+    getContent,
+    deleteContent,
+    getUserLike,
+    deleteLike,
+    addLike,
+    getLikedContent,
+  };
 };
 
 export default useContentState;

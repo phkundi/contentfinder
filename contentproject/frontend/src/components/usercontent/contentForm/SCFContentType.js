@@ -36,7 +36,7 @@ function SCFContentType({
   return (
     <ShareFormContainer>
       <ShareFormTitle>Submit {active}</ShareFormTitle>
-      <ShareFormSubtitle>
+      <ShareFormSubtitle center={true}>
         What kind of content are you sharing?
       </ShareFormSubtitle>
       <FormGroup>

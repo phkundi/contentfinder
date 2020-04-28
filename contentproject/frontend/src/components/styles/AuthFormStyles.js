@@ -18,6 +18,11 @@ export const FormContainer = styled.div`
     width: 60%;
     margin-top: 3rem;
   }
+
+  @media ${(props) => props.theme.device.desktop} {
+    width: 40%;
+    margin-top: 3rem;
+  }
 `;
 
 export const FormTitle = styled.h4`

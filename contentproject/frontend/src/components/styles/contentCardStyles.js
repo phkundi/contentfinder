@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Card = styled.div`
   margin-bottom: 3rem;
-  margin-right: 2%;
   background-color: #fff;
   box-shadow: ${(props) => props.theme.boxShadow.light};
   border-radius: 30px;
@@ -13,6 +12,7 @@ export const Card = styled.div`
 
   @media ${(props) => props.theme.device.laptop} {
     width: 45%;
+    margin-right: 2%;
   }
 
   @media ${(props) => props.theme.device.laptopL} {
@@ -30,14 +30,22 @@ export const CardImage = styled.div`
   background-image: url(${(props) => props.source});
   background-size: cover;
   background-position: center;
-  padding: 6rem;
+  padding: 5rem;
   position: relative;
+
+  @media ${(props) => props.theme.device.tablet} {
+    padding: 6rem;
+  }
 `;
 
 export const CardBody = styled.div`
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+
+  @media ${(props) => props.theme.device.tablet} {
+    padding: 2rem;
+  }
 `;
 
 export const ContentType = styled.span`
@@ -148,7 +156,7 @@ export const CardEditButton = styled.button`
   }
 `;
 
-export const LikeBox = styled.div`
+export const LikeBoxContainer = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
@@ -159,6 +167,7 @@ export const LikeBox = styled.div`
   background-color: #fff;
   box-shadow: ${(props) => props.theme.boxShadow.light};
   cursor: pointer;
+  width: 30%;
 
   &:hover {
     & > div > i {
@@ -169,14 +178,17 @@ export const LikeBox = styled.div`
 
 export const LikeBoxChildContainer = styled.div`
   position: relative;
-  padding: 1rem 1.2rem;
+  padding: 1.2rem;
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
 
   & > i {
     position: absolute;
     font-size: 1.3rem;
     color: ${(props) => props.theme.colors.red};
+    left: 50%;
   }
 
   & > span {

@@ -1,59 +1,15 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { axiosInstance } from "../../../axiosInstance";
 import UserInfoSection from "./UserInfoSection";
 import useAuthState from "../../../hooks/useAuthState";
 import Modal from "../../common/Modal";
-
-const UserInformationContainer = styled.div`
-  background-color: #fff;
-  padding: 2rem;
-  margin-bottom: 1rem;
-  border-radius: 30px;
-  box-shadow: ${(props) => props.theme.boxShadow.medium};
-`;
-
-const UserProfileTitle = styled.h1`
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const UserInfoGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-`;
-
-const UserProfileButtonsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const UserProfileButton = styled.button`
-  margin-top: 2rem;
-  padding: 0.5rem 1rem;
-  background-color: ${(props) =>
-    props.outlined ? "transparent" : props.theme.colors[props.color]};
-  border-color: ${(props) => props.theme.colors[props.color]};
-  border: 2px solid;
-  color: ${(props) =>
-    props.outlined ? props.theme.colors[props.color] : "#fff"};
-  border-radius: 30px;
-  align-self: center;
-  transition: background-color 0.2s;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    background-color: ${(props) =>
-      props.outlined ? props.theme.colors[props.color] : ""};
-    color: ${(props) => (props.outlined ? "#fff" : "")};
-  }
-`;
+import {
+  UserInformationContainer,
+  UserProfileTitle,
+  UserInfoGroup,
+  UserProfileButtonsContainer,
+  UserProfileButton,
+} from "../../styles/UserProfileStyles";
 
 function UserInfo({ auth }) {
   const { user } = auth;

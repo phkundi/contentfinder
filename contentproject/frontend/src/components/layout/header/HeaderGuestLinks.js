@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { UserActionsContainer } from "../styles/HeaderStyles";
+import { UserActionsContainer } from "../../styles/DesktopHeaderStyles";
 
 function HeaderGuestLinks() {
   return (

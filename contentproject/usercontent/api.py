@@ -18,15 +18,21 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
 
     def get_queryset(self):
-        return Like.objects.all()
+        queryset = Like.objects.all()
+        post_id = self.request.query_params.get('post_id', None)
+        if post_id is not None:
+            queryset = queryset.filter(post=post_id)
+        user_id = self.request.query_params.get('user_id', None)
+        if user_id is not None:
+            queryset = queryset.filter(user=user_id)
+        return queryset
     
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(user=self.request.user)
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [
-        ##### NEED TO CHANGE
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
     serializer_class = PostSerializer
 

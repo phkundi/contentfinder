@@ -55,6 +55,7 @@ export const FormGroup = styled.div`
 export const ShareFormSubtitle = styled.h4`
   font-size: 1.5rem;
   margin-bottom: 2rem;
+  text-align: ${(props) => (props.center ? "center" : "left")};
 `;
 
 export const ShareFormSubheading = styled.h5`

@@ -7,23 +7,30 @@ export const ContentDetailWrapper = styled.div`
 
 export const ContentDetailContainer = styled.div`
   background-color: #fff;
-  border-radius: 30px;
+  border-radius: 0px;
   margin: 0;
   width: 100%;
   box-shadow: ${(props) => props.theme.boxShadow.medium};
 
   @media ${(props) => props.theme.device.laptop} {
     margin: 1rem;
+    border-radius: 30px;
   }
 `;
 
 export const ContentDetailImage = styled.div`
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   padding: 10rem;
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.source});
+
+  @media ${(props) => props.theme.device.laptop} {
+    margin: 1rem;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+  }
 `;
 
 export const ContentDetailTitle = styled.h1`

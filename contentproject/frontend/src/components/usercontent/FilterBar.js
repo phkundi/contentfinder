@@ -30,7 +30,7 @@ function FilterBar({ setFilter, filter }) {
         <FilterBarHeadContainer>
           <FilterBarHeading>What are you looking for?</FilterBarHeading>
           <ResetFilterButton show={filter} onClick={resetFilter}>
-            Reset Filter
+            Reset
           </ResetFilterButton>
         </FilterBarHeadContainer>
 

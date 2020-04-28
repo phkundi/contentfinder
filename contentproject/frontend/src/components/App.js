@@ -53,7 +53,7 @@ function App() {
         exact
         path="/blogs/:id"
         render={(routeProps) => (
-          <Layout goBack="blogs">
+          <Layout goBack="blogs" noMarginTop={true}>
             <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
@@ -71,7 +71,7 @@ function App() {
         exact
         path="/podcasts/:id"
         render={(routeProps) => (
-          <Layout goBack="podcasts">
+          <Layout goBack="podcasts" noMarginTop={true}>
             <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
@@ -89,7 +89,7 @@ function App() {
         exact
         path="/youtube/:id"
         render={(routeProps) => (
-          <Layout goBack="youtube">
+          <Layout goBack="youtube" noMarginTop={true}>
             <ContentDetail id={routeProps.match.params.id} />
           </Layout>
         )}
@@ -99,7 +99,7 @@ function App() {
         exact
         path="/login"
         render={() => (
-          <Layout centerContentX={true} hideHeader={true}>
+          <Layout hideHeader={true} noMarginTop={true}>
             <Login />
           </Layout>
         )}
@@ -108,7 +108,7 @@ function App() {
         exact
         path="/register"
         render={() => (
-          <Layout centerContentX={true} hideHeader={true}>
+          <Layout hideHeader={true} noMarginTop={true}>
             <Register />
           </Layout>
         )}
@@ -118,15 +118,20 @@ function App() {
         exact
         path="/share"
         component={ShareContentForm}
-        centerContentX={true}
         hideSearch={true}
+        noMarginTop={true}
       />
-      <PrivateRoute exact path="/profile" component={UserProfile} />
+      <PrivateRoute
+        exact
+        path="/profile"
+        component={UserProfile}
+        noMarginTop={true}
+      />
       {/* Catch All Route */}
       <Route
         path="/"
         render={() => (
-          <Layout centerContentX={true}>
+          <Layout>
             <PageNotFound />
           </Layout>
         )}

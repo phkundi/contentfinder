@@ -3,18 +3,10 @@ import styled from "styled-components";
 import ContentCard from "../../usercontent/ContentCard";
 import { ListContainer } from "../../styles/ContentListStyles";
 import useContentState from "../../../hooks/useContentState";
-
-const UserContentContainer = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 2rem 0;
-  flex-direction: column;
-`;
-
-const UserContentHeading = styled.h2`
-  text-align: center;
-  font-size: 2rem;
-`;
+import {
+  UserContentContainer,
+  UserContentHeading,
+} from "../../styles/UserProfileStyles";
 
 function UserContent() {
   const { getUserContent, deleteContent } = useContentState();
@@ -40,6 +32,7 @@ function UserContent() {
                 content={content}
                 editable={true}
                 handleDelete={handleDelete}
+                className="col-sm-12 col-md-6 col-lg-4 col-xl-3"
               />
             ))
           : "Loading"}

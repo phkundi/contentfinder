@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
+// Desktop Header
 export const HeaderContainer = styled.div`
   margin-bottom: 3rem;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0;
 
   @media ${(props) => props.theme.device.laptop} {
-    padding: 0;
+    display: ${(props) => (props.hideHeader ? "none" : "flex")};
   }
 `;
 

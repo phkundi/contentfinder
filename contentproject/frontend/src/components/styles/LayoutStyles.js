@@ -2,11 +2,14 @@ import styled from "styled-components";
 
 export const LayoutContainer = styled.div`
   display: flex;
+  max-width: 100%;
+  position: relative;
 `;
 
 export const MainContainer = styled.header`
   width: 100%;
   padding: 0;
+  overflow-x: hidden;
 
   @media ${(props) => props.theme.device.tablet} {
     width: 75%;
@@ -27,9 +30,10 @@ export const ContentContainer = styled.section`
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-top: ${(props) => (props.noMarginTop ? "4rem" : "6rem")};
 
   @media ${(props) => props.theme.device.laptop} {
-    justify-content: ${(props) =>
-      props.centerContentX ? "center" : "flex-start"};
+    margin-top: 0;
+    justify-content: center;
   }
 `;

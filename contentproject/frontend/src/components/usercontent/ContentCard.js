@@ -14,11 +14,10 @@ import {
   CardTags,
   FooterText,
   TagBox,
-  LikeBox,
-  LikeBoxChildContainer,
 } from "../styles/ContentCardStyles";
 import CardOwnerActions from "./CardOwnerActions";
 import { contentSlugs } from "../../constants";
+import LikeBox from "./LikeBox";
 
 function ContentCard({ content, editable, handleEdit, handleDelete }) {
   const {
@@ -35,15 +34,8 @@ function ContentCard({ content, editable, handleEdit, handleDelete }) {
     <Card>
       <div>
         <CardImage source="https://source.unsplash.com/random">
-          <LikeBox>
-            <LikeBoxChildContainer>
-              {/* <i className="fas fa-heart"></i> */}
-              <i className="far fa-heart"></i>
-            </LikeBoxChildContainer>
-            <LikeBoxChildContainer>
-              <span>{get_total_likes}</span>
-            </LikeBoxChildContainer>
-          </LikeBox>
+          <LikeBox likes={get_total_likes} id={id} />
+
           {editable ? (
             <CardOwnerActions
               id={id}
