@@ -1,4 +1,5 @@
 media/
+webpack-stats-json
 
 # Mac
 .DS_Store
