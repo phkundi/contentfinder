@@ -3,6 +3,7 @@ function contentReducer(state, action) {
     case ADD_CONTENT:
       return {
         ...state,
+        content: [...state.content, action.payload],
       };
 
     default:

@@ -1,5 +1,10 @@
 media/
+<<<<<<< HEAD
 webpack-stats-json
+=======
+.gitignore
+webpack-stats.json
+>>>>>>> infinitescroll
 
 # Mac
 .DS_Store

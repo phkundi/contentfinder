@@ -4,6 +4,13 @@ export const MobileHeaderWrapper = styled.header`
   margin-bottom: 3rem;
   display: flex;
   max-width: 100vw;
+  width: 100%;
+  background-color: ${(props) => props.theme.colors.primary};
+  box-shadow: ${(props) => props.theme.boxShadow.medium};
+  position: fixed;
+  top: 0;
+  height: 4rem;
+  z-index: 1000;
 
   @media ${(props) => props.theme.device.laptop} {
     display: none;
@@ -16,12 +23,6 @@ export const MobileHeaderContainer = styled.div`
   align-items: center;
   padding: 1rem;
   width: 100%;
-  background-color: ${(props) => props.theme.colors.primary};
-  box-shadow: ${(props) => props.theme.boxShadow.medium};
-  position: fixed;
-  top: 0;
-  height: 4rem;
-  z-index: 1000;
 `;
 
 export const MobileHeaderLogo = styled.span`
@@ -46,7 +47,8 @@ export const MobileHeaderIconButton = styled.button`
   outline: none;
   font-size: 1.3rem;
   margin-right: 1rem;
-  color: ${(props) => (props.close ? props.theme.colors.red : "#fff")};
+  margin-left: ${(props) => props.close && "1rem"};
+  color: #fff;
 `;
 
 export const MobileHeaderMenuContainer = styled.div`

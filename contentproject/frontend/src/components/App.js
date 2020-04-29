@@ -9,6 +9,7 @@ import ShareContentForm from "./usercontent/contentForm/ShareContentForm";
 import PrivateRoute from "./common/PrivateRoute";
 import PageNotFound from "./common/PageNotFound.js";
 import UserProfile from "./accounts/profile/UserProfile";
+import InfiniteContentList from "./usercontent/ContentList";
 
 function App() {
   // Listen for window close and remove login token if specified otherwise by user
@@ -128,6 +129,18 @@ function App() {
         noMarginTop={true}
       />
       {/* Catch All Route */}
+      <Route
+        path="/infinite"
+        render={() => (
+          <Layout>
+            <InfiniteContentList
+              query="all"
+              type={false}
+              heading="All Contents"
+            />
+          </Layout>
+        )}
+      />
       <Route
         path="/"
         render={() => (
