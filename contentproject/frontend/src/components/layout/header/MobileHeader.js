@@ -30,7 +30,7 @@ function MobileHeader({
   return (
     <MobileHeaderWrapper>
       {searching ? (
-        <>
+        <MobileHeaderContainer>
           <Searchbar
             autofocus={true}
             searching={searching}
@@ -42,7 +42,7 @@ function MobileHeader({
           <MobileHeaderIconButton onClick={handleSearch} close={true}>
             <i className="fas fa-times" />
           </MobileHeaderIconButton>
-        </>
+        </MobileHeaderContainer>
       ) : (
         <MobileHeaderContainer>
           <MobileHeaderLogo>

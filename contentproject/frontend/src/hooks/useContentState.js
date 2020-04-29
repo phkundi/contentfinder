@@ -1,24 +1,20 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { MessageContext } from "../context/messageContext";
-import { ContentContext } from "../context/contentContext";
 import { ErrorContext } from "../context/errorContext";
 import { tokenConfig, createMessage, returnErrors } from "../helpers/helpers";
 import { axiosInstance } from "../axiosInstance";
-import { ADD_CONTENT, DELETE_CONTENT } from "../reducers/types";
 
 const useContentState = () => {
   const { dispatchMessages } = useContext(MessageContext);
   const { dispatchErrors } = useContext(ErrorContext);
   const { auth } = useContext(AuthContext);
-  const { content, dispatchContent } = useContext(ContentContext);
 
   // Add new Content from Form
   const addContent = (content) => {
     axiosInstance
       .post(`/content/posts/`, content, tokenConfig(auth.token))
       .then((res) => {
-        dispatchContent({ type: ADD_CONTENT, payload: res.data });
         dispatchMessages(
           createMessage({ contentAdded: "Submitted successfully" })
         );
@@ -33,7 +29,6 @@ const useContentState = () => {
     axiosInstance
       .delete(`/content/posts/${id}`, tokenConfig(auth.token))
       .then((res) => {
-        dispatchContent({ type: DELETE_CONTENT, payload: id });
         dispatchMessages(
           createMessage({ contentDeleted: "Deleted successfully" })
         );
@@ -68,9 +63,11 @@ const useContentState = () => {
     }
   };
 
+  // Get user content by slices to make infinite scroll
   const getInfiniteContent = async ({
     type = null,
     filter = null,
+    searchQuery = null,
     setContent,
     content,
     limit,
@@ -85,6 +82,10 @@ const useContentState = () => {
       res = await axiosInstance.get(
         `content/posts-infinite/?limit=${limit}&offset=${offset}&content=${type}`
       );
+    } else if (searchQuery) {
+      res = await axiosInstance.get(
+        `content/posts-infinite/?limit=${limit}&offset=${offset}&q=${searchQuery}`
+      );
     } else {
       res = await axiosInstance.get(
         `content/posts-infinite/?limit=${limit}&offset=${offset}`
@@ -94,6 +95,7 @@ const useContentState = () => {
     try {
       const newContent = res.data.content;
 
+      // If a filter has already been set, filter the results
       if (filter) {
         const filteredContent = newContent.filter((content) =>
           content.tags.includes(filter)
@@ -112,9 +114,23 @@ const useContentState = () => {
     }
   };
 
+  // Filter content by tags
   const filterContent = ({ filter, content, setContent }) => {
     const filteredContent = content.filter((c) => c.tags.includes(filter));
     setContent(filteredContent);
+  };
+
+  // Search content without infinite scroll (get all matching results at once from DB)
+  const searchContent = ({ searchQuery, setSearchResults }) => {
+    axiosInstance
+      .get(`content/search/?q=${searchQuery}`)
+      .then((res) => {
+        const newResults = res.data;
+        setSearchResults(newResults);
+      })
+      .catch((err) => {
+        dispatchErrors(returnErrors(err.response.data, err.response.status));
+      });
   };
 
   // Get all user likes - not currently used anywhere
@@ -143,9 +159,10 @@ const useContentState = () => {
 
   // Add Like
   const addLike = (postID, setLike, totalLikes) => {
+    const user = auth.user.id;
     const body = JSON.stringify({
       post: postID,
-      user: auth.user.id,
+      user: user,
     });
 
     axiosInstance
@@ -179,6 +196,7 @@ const useContentState = () => {
     addLike,
     getLikedContent,
     filterContent,
+    searchContent,
   };
 };
 

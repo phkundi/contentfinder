@@ -12,7 +12,6 @@ function LikeBox({ id }) {
     likeID: null,
     totalLikes: 0,
   });
-  //   const [like, setLike] = useState(null);
 
   useEffect(() => {
     getUserLike(id, setLikeStatus);

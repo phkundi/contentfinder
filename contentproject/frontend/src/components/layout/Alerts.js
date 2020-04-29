@@ -53,6 +53,9 @@ function Alerts() {
     if (messages.tooManyTags) {
       alert.error(messages.tooManyTags);
     }
+    if (messages.noTags) {
+      alert.error(messages.noTags);
+    }
     if (messages.contentAdded) {
       alert.success(messages.contentAdded);
     }

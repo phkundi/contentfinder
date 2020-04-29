@@ -6,6 +6,7 @@ import useAuthState from "../../hooks/useAuthState";
 import useToggleState from "../../hooks/useToggleState";
 import useInputState from "../../hooks/useInputState";
 import SearchResults from "./SearchResults";
+import ContentList from "../usercontent/ContentList";
 import {
   LayoutContainer,
   MainContainer,
@@ -41,7 +42,7 @@ function Layout(props) {
         <Alerts />
         <ContentContainer noMarginTop={props.noMarginTop}>
           {searching ? (
-            <SearchResults searchQuery={searchQuery} />
+            <ContentList isSearch={true} searchQuery={searchQuery} />
           ) : (
             props.children
           )}

@@ -9,21 +9,15 @@ import {
 import { SearchMinLength, SearchResultsTitle } from "../styles/SearchbarStyles";
 
 function SearchResults({ searchQuery }) {
-  const { getContent } = useContentState();
-  const [staticContent, setStaticContent] = useState([]);
+  const { searchContent } = useContentState();
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    getContent({ setState: setStaticContent });
-  }, []);
-
-  useEffect(() => {
-    const results = staticContent.filter(
-      (content) =>
-        content.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        content.owner.username.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    searchQuery.length > 2 ? setSearchResults(results) : setSearchResults([]);
+    if (searchQuery.length > 2) {
+      searchContent({ setSearchResults, searchQuery });
+    } else if (!searchQuery) {
+      setSearchResults([]);
+    }
   }, [searchQuery]);
 
   return (

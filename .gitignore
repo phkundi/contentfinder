@@ -1,4 +1,6 @@
 media/
+.gitignore
+webpack-stats.json
 
 # Mac
 .DS_Store
