@@ -141,9 +141,9 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
             ))}
           </ListContainer>
         </ContentListWrapper>
-        {error && <div>{error}</div>}
+        {/* {error && <div>{error}</div>}
         {loading && <div>Loading</div>}
-        {!hasMore && <div>No more</div>}
+        {!hasMore && <div>No more</div>} */}
       </ListPageWrapper>
     );
   }

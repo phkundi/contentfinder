@@ -5,7 +5,7 @@ import {
 } from "../styles/ContentCardStyles";
 import useContentState from "../../hooks/useContentState";
 
-function LikeBox({ id }) {
+function LikeBox({ id, inDetail }) {
   const { getUserLike, deleteLike, addLike } = useContentState();
   const [likeStatus, setLikeStatus] = useState({
     liked: false,
@@ -26,7 +26,10 @@ function LikeBox({ id }) {
   };
 
   return (
-    <LikeBoxContainer onClick={likeStatus.liked ? handleDelete : handleLike}>
+    <LikeBoxContainer
+      onClick={likeStatus.liked ? handleDelete : handleLike}
+      inDetail={inDetail}
+    >
       <LikeBoxChildContainer>
         {likeStatus.liked ? (
           <i className="fas fa-heart" />

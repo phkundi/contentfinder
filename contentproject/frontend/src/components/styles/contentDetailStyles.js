@@ -25,9 +25,9 @@ export const ContentDetailImage = styled.div`
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.source});
+  position: relative;
 
   @media ${(props) => props.theme.device.laptop} {
-    margin: 1rem;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
   }

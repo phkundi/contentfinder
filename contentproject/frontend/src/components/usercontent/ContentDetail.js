@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance } from "../../axiosInstance";
+import LikeBox from "./LikeBox";
 import {
   ContentDetailContainer,
   ContentDetailImage,
@@ -24,7 +25,9 @@ function ContentDetail({ id }) {
   if (content) {
     return (
       <ContentDetailContainer>
-        <ContentDetailImage source="https://source.unsplash.com/random" />
+        <ContentDetailImage source="https://source.unsplash.com/random">
+          <LikeBox inDetail={true} id={id} />
+        </ContentDetailImage>
         <ContentDetailBody>
           <ContentType>{content_type}</ContentType>
           <ContentDetailTitle>{name}</ContentDetailTitle>
