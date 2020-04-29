@@ -1,5 +1,8 @@
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import CardOwnerActions from "./CardOwnerActions";
+import { contentSlugs } from "../../constants";
+import LikeBox from "./LikeBox";
 import {
   Card,
   CardImage,
@@ -15,9 +18,6 @@ import {
   FooterText,
   TagBox,
 } from "../styles/ContentCardStyles";
-import CardOwnerActions from "./CardOwnerActions";
-import { contentSlugs } from "../../constants";
-import LikeBox from "./LikeBox";
 
 function ContentCard({ content, editable, handleEdit, handleDelete }) {
   const {

@@ -1,6 +1,12 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import BaseAnimation from "./BaseAnimation";
 
-export const Card = styled.div`
+const FadeInAnimation = keyframes`  
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+export const Card = styled(BaseAnimation)`
   margin-bottom: 3rem;
   background-color: #fff;
   box-shadow: ${(props) => props.theme.boxShadow.light};
@@ -9,6 +15,7 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  animation-name: ${FadeInAnimation};
 
   @media ${(props) => props.theme.device.laptop} {
     width: 45%;
@@ -167,7 +174,7 @@ export const LikeBoxContainer = styled.div`
   background-color: #fff;
   box-shadow: ${(props) => props.theme.boxShadow.light};
   cursor: pointer;
-  width: 30%;
+  width: ${(props) => (props.inDetail ? "15%" : "30%")};
 
   &:hover {
     & > div > i {

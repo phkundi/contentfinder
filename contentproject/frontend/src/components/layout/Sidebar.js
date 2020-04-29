@@ -30,7 +30,7 @@ function Sidebar({ auth }) {
   return (
     <SidebarContainer>
       <SidebarLogo>
-        <Link to="/">Content Finder</Link>
+        <Link to="/">Poyoblo</Link>
       </SidebarLogo>
       <SidebarNav>
         <SidebarMenu>
