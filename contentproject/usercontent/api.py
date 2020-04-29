@@ -102,16 +102,15 @@ class InfinitePostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = infinite_filter(self.request)
         return queryset
-    
+        
     def list(self, request):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
-        
         return Response({
             "content": serializer.data,
             "has_more": is_there_more_data(request)
         })
-    
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 

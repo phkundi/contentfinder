@@ -13,21 +13,14 @@ import InfiniteContentList from "./usercontent/ContentList";
 
 function App() {
   // Listen for window close and remove login token if specified otherwise by user
-  useEffect(() => {
-    const onbeforeunloadFn = () => {
-      if (
-        window.localStorage.getItem("token") &&
-        !window.localStorage.getItem("save-login")
-      ) {
-        localStorage.removeItem("token");
-      }
-    };
-
-    window.addEventListener("beforeunload", onbeforeunloadFn);
-    return () => {
-      window.removeEventListener("beforeunload", onbeforeunloadFn);
-    };
-  }, []);
+  window.onbeforeunload = () => {
+    if (
+      window.localStorage.getItem("token") &&
+      !window.localStorage.getItem("save-login")
+    ) {
+      localStorage.removeItem("token");
+    }
+  };
 
   return (
     <Switch>
