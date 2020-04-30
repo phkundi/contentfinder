@@ -6,14 +6,22 @@ export const LayoutContainer = styled.div`
   position: relative;
 `;
 
-export const MainContainer = styled.header`
+export const MainContainer = styled.div`
   width: 100%;
   padding: 0;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 
   @media ${(props) => props.theme.device.tablet} {
+    width: 100%;
+    align-items: center;
+  }
+
+  @media ${(props) => props.theme.device.laptop} {
     width: 75%;
     padding: 2rem 3rem;
+    align-items: unset;
   }
 
   @media ${(props) => props.theme.device.laptopL} {
@@ -32,8 +40,14 @@ export const ContentContainer = styled.section`
   justify-content: center;
   margin-top: ${(props) => (props.noMarginTop ? "4rem" : "6rem")};
 
+  @media ${(props) => props.theme.device.tablet} {
+    width: 95%;
+    margin-top: 6rem;
+  }
+
   @media ${(props) => props.theme.device.laptop} {
     margin-top: 0;
     justify-content: center;
+    width: 100%;
   }
 `;

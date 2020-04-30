@@ -9,7 +9,7 @@ import {
 function Searchbar({
   hideSearch,
   searching,
-  setSearching,
+  toggleSearching,
   searchQuery,
   setSearchQuery,
   resetSearchQuery,
@@ -17,10 +17,10 @@ function Searchbar({
 }) {
   const handleClose = () => {
     resetSearchQuery();
-    setSearching();
+    toggleSearching();
   };
   return (
-    <SearchBarContainer hideSearch={hideSearch}>
+    <SearchBarContainer hideSearch={hideSearch} onClick={toggleSearching}>
       {searching ? (
         <CloseSearch onClick={handleClose}>
           <i className="fas fa-times" />
@@ -31,7 +31,6 @@ function Searchbar({
       <SearchBarInput
         type="text"
         placeholder="Search by Title or User"
-        onClick={setSearching}
         value={searchQuery}
         onChange={setSearchQuery}
         autoFocus={autofocus ? true : false}

@@ -9,6 +9,10 @@ export const SearchBarContainer = styled.div`
   @media ${(props) => props.theme.device.laptop} {
     width: 70%;
   }
+
+  @media ${(props) => props.theme.device.desktop} {
+    width: 40%;
+  }
 `;
 
 export const SearchIcon = styled.i`
@@ -20,6 +24,7 @@ export const SearchIcon = styled.i`
   @media ${(props) => props.theme.device.laptop} {
     color: rgba(0, 0, 0, 0.4);
     font-size: 1rem;
+    cursor: pointer;
   }
 `;
 

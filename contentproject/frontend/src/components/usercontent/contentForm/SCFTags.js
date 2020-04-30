@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../../axiosInstance";
-import useInputState from "../../../hooks/useInputState";
+import { shuffleArray } from "../../../helpers/helpers";
 import {
   ShareFormSubtitle,
   ContentFormButton,
@@ -29,6 +29,8 @@ function SCFTags({
     const getTags = () => {
       axiosInstance.get("content/tags/").then((res) => {
         setTags(res.data);
+        const previewTags = shuffleArray(res.data).slice(0, 10);
+        setFilteredTags(previewTags);
       });
     };
     getTags();
@@ -81,15 +83,16 @@ function SCFTags({
         </ShareFormTag>
       ))}
       {/* Then map over the remaining tags that fit the query */}
-      {filteredTags.map((tag) => (
-        <ShareFormTag
-          active={contentTags.includes(tag.name)}
-          onClick={handleSelect}
-          key={tag.id}
-        >
-          {tag.name}
-        </ShareFormTag>
-      ))}
+      {filteredTags &&
+        filteredTags.map((tag) => (
+          <ShareFormTag
+            active={contentTags.includes(tag.name)}
+            onClick={handleSelect}
+            key={tag.id}
+          >
+            {tag.name}
+          </ShareFormTag>
+        ))}
     </ShareFormTagsContainer>
   );
 

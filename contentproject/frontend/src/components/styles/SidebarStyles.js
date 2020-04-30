@@ -7,17 +7,21 @@ export const SidebarContainer = styled.div`
   flex-direction: column;
   box-shadow: ${(props) => props.theme.boxShadow.medium};
 
-  @media ${(props) => props.theme.device.tablet} {
+  @media ${(props) => props.theme.device.laptop} {
     display: flex;
     width: 25%;
   }
 
   @media ${(props) => props.theme.device.laptopL} {
-    width: 17%;
+    width: 25%;
   }
 
   @media ${(props) => props.theme.device.desktop} {
-    width: 15%;
+    width: 20%;
+  }
+
+  @media (min-width: 2000px) {
+    width: 17%;
   }
 `;
 
@@ -61,7 +65,8 @@ export const SidebarListItem = styled.li`
 
 export const SidebarButton = styled.button`
   margin-top: 1rem;
-  padding: 0.8rem 3rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
   background-color: ${(props) =>
     props.outlined ? "transparent" : props.theme.colors.primary};
   width: 100%;
@@ -81,5 +86,13 @@ export const SidebarButton = styled.button`
     &:hover {
       text-decoration: none;
     }
+  }
+
+  @media ${(props) => props.theme.device.laptopL} {
+    padding: 0.8rem 3rem;
+  }
+
+  @media ${(props) => props.theme.device.desktop} {
+    font-size: 1rem;
   }
 `;

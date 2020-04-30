@@ -12,7 +12,7 @@ function DesktopHeader({
   goBack,
   hideSearch,
   searching,
-  setSearching,
+  toggleSearching,
   searchQuery,
   setSearchQuery,
   resetSearchQuery,
@@ -36,7 +36,7 @@ function DesktopHeader({
       return (
         <Searchbar
           searching={searching}
-          setSearching={setSearching}
+          toggleSearching={toggleSearching}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           resetSearchQuery={resetSearchQuery}

@@ -14,7 +14,7 @@ function ShareContentForm(props) {
   // To make success alert
   const { dispatchMessages } = useContext(MessageContext);
   // To keep track of which form to display
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); // NEEDS TO BE 1 NOT 0
   // Input state
   const [contentType, setContentType] = useState("none");
   const [contentTitle, setContentTitle] = useInputState("");

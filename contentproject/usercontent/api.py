@@ -1,8 +1,8 @@
-from .models import Tag, Like, Post
+from .models import Tag, Post
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
-from .serializers import TagSerializer, LikeSerializer, PostSerializer
-from django.db.models import Q
+from .serializers import TagSerializer, PostSerializer
+from django.db.models import Q, Count
 
 # Tags
 class TagViewSet(viewsets.ModelViewSet):
@@ -13,26 +13,6 @@ class TagViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Tag.objects.all()
-
-# Likes
-class LikeViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
-    ]
-    serializer_class = LikeSerializer
-
-    def get_queryset(self):
-        queryset = Like.objects.all()
-        post_id = self.request.query_params.get('post_id', None)
-        if post_id is not None:
-            queryset = queryset.filter(post=post_id)
-        user_id = self.request.query_params.get('user_id', None)
-        if user_id is not None:
-            queryset = queryset.filter(user=user_id)
-        return queryset
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 # Posts without infinite scroll
 class PostViewSet(viewsets.ModelViewSet):
@@ -48,37 +28,80 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(content_type=content_type)
         return queryset
     
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+        
+    
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 # Infinite Posts Methods
+
+# Get required slice of content
 def infinite_filter(request):
-    queryset = Post.objects.all()
+    # query information
     limit = request.GET.get("limit")
     offset = request.GET.get("offset")
-    content_type = request.GET.get("content", None)
-    search_query = request.GET.get("q", None)
-    if content_type:
+    content_type = request.GET.get("type")
+    search_query = request.GET.get("search")
+    filter_query = request.GET.get("filter")
+    sort_query = request.GET.get("sort")
+    
+    # initial queryset
+    queryset = Post.objects.all()
+
+    # if user is looking for specific type of content (Blog, Podcast, Youtube)
+    if content_type and content_type != "null":
         queryset = queryset.filter(content_type=content_type)
-    elif search_query:
+
+    # If user entered a search term
+    elif search_query and search_query != "null":
         queryset = queryset.filter(
             Q(name__icontains=search_query) | 
             Q(owner__username__contains=search_query) | 
             Q(tags__name__contains=search_query)
         )
 
+    # if, in addition to the above, user set tag filter
+    if filter_query and filter_query != "null":
+        queryset = queryset.filter(tags__name=filter_query)
+    
+    if sort_query and sort_query != "null":
+        # does not work
+        if sort_query == "Newest":
+            queryset = queryset.order_by("-added")
+        # Sort by Likes
+        elif sort_query == "Most Popular":
+            queryset = queryset.annotate(like_count=Count('likes')).order_by('-like_count')
+
+    # slice the queryset
     return queryset[int(offset):int(offset)+int(limit)]
 
 def is_there_more_data(request):
-    content_type = request.query_params.get('content', None)
+    # query information
+    content_type = request.query_params.get('type', None)
     offset = request.GET.get('offset')
-    search_query = request.GET.get("q", None)
+    search_query = request.GET.get("search", None)
+    filter_query = request.GET.get("filter", None)
+
     # If user is looking for a specific content type
-    if content_type:
-        if int(offset) > Post.objects.filter(content_type=content_type).count():
+    if content_type and content_type != "null":
+        results = Post.objects.filter(content_type=content_type).count()
+        if int(offset) > results:
             return False
+
+        # If user has also specified filter query
+        if filter_query and filter_query != "null":
+            results = Post.objects.filter(Q(tags__name=filter_query) & Q(content_type=content_type)).count() 
+            if int(offset) > results:
+                return False
+
     # If user is searching
-    elif search_query:
+    elif search_query and search_query != "null":
         results = Post.objects.filter(
             Q(name__icontains=search_query) | 
             Q(owner__username__contains=search_query) | 
@@ -86,10 +109,19 @@ def is_there_more_data(request):
         ).count()
         if int(offset) > results:
             return False
+    # If there is a filter set
+
+    if filter_query and filter_query != "null":
+        results = Post.objects.filter(tags__name=filter_query).count()
+        if int(offset) > results:
+            return False
+
     # If user is querying all posts
     else:
         if int(offset) > Post.objects.all().count():
             return False
+
+    # If offset is bigger than any of the above, return True for more Data
     return True
 
 # Infinite Posts Viewset
@@ -99,10 +131,12 @@ class InfinitePostViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = PostSerializer
 
+    # Get queryset from infinite filter method
     def get_queryset(self):
         queryset = infinite_filter(self.request)
         return queryset
-        
+    
+    # overwrite list method to include has_more in the response
     def list(self, request):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
@@ -124,7 +158,7 @@ class UserContentView(viewsets.ModelViewSet):
     def get_queryset(self):
         return Post.objects.filter(owner=self.request.user)
 
-# Search without infinite scroll
+# Search without infinite scroll - not currently used anywhere
 def search_filter(request):
     search_query = request.query_params.get("q", None)
     if search_query is not None:

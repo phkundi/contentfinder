@@ -8,7 +8,7 @@ const size = {
   laptop: "1024px",
   laptopL: "1440px",
   desktop: "1800px",
-  desktopL: "2560px",
+  desktopXL: "2560px",
 };
 
 const theme = {

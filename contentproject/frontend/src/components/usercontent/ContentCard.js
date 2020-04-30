@@ -1,5 +1,8 @@
-import React, { memo } from "react";
+import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
+import useContentState from "../../hooks/useContentState";
+import useToggleState from "../../hooks/useToggleState";
 import CardOwnerActions from "./CardOwnerActions";
 import { contentSlugs } from "../../constants";
 import LikeBox from "./LikeBox";
@@ -19,22 +22,39 @@ import {
   TagBox,
 } from "../styles/ContentCardStyles";
 
-function ContentCard({ content, editable, handleEdit, handleDelete }) {
-  const {
-    id,
-    content_type,
-    name,
-    description,
-    owner,
-    tags,
-    get_total_likes,
-  } = content;
+function ContentCard({
+  content,
+  editable,
+  handleEdit,
+  handleDelete,
+  isSearch,
+  toggleSearching,
+  setFilter,
+}) {
+  const { id, content_type, name, description, owner, tags, likes } = content;
+  const { handleLike } = useContentState();
+  const { auth } = useContext(AuthContext);
+  const [likeStatus, setLikeStatus] = useState({
+    liked: auth.isAuthenticated ? likes.includes(auth.user.id) : false,
+    likeCount: likes.length,
+    currentLikes: likes,
+  });
+  const { likeCount, liked, currentLikes } = likeStatus;
+
+  const handleClick = () => {
+    handleLike(id, currentLikes, setLikeStatus);
+  };
 
   return (
     <Card>
       <div>
         <CardImage source="https://source.unsplash.com/random">
-          <LikeBox likes={get_total_likes} id={id} />
+          <LikeBox
+            likeCount={likeCount}
+            handleClick={handleClick}
+            id={id}
+            liked={liked}
+          />
 
           {editable ? (
             <CardOwnerActions
@@ -50,7 +70,12 @@ function ContentCard({ content, editable, handleEdit, handleDelete }) {
         <CardBody>
           <ContentType>{content_type}</ContentType>
           <CardTitle>
-            <Link to={`/${contentSlugs[content_type]}/${id}`}>{name}</Link>
+            <Link
+              to={`/${contentSlugs[content_type]}/${id}`}
+              onClick={isSearch && toggleSearching}
+            >
+              {name}
+            </Link>
           </CardTitle>
           <CardSubtitle>By {owner.username}</CardSubtitle>
           <CardDesription>
@@ -69,7 +94,9 @@ function ContentCard({ content, editable, handleEdit, handleDelete }) {
           <CardTags>
             <FooterText>Tags: </FooterText>
             {tags.map((tag, i) => (
-              <TagBox key={i}>{tag}</TagBox>
+              <TagBox key={i} onClick={() => setFilter(tag)}>
+                {tag}
+              </TagBox>
             ))}
           </CardTags>
         </CardFooter>

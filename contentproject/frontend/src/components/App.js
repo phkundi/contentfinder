@@ -29,7 +29,7 @@ function App() {
         path="/"
         render={() => (
           <Layout>
-            <ContentList query="all" type={false} heading="All Contents" />
+            <ContentList query="all" type={null} heading="All Contents" />
           </Layout>
         )}
       />

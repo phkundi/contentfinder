@@ -68,6 +68,7 @@ const useContentState = () => {
     type = null,
     filter = null,
     searchQuery = null,
+    sortBy = null,
     setContent,
     content,
     limit,
@@ -77,41 +78,28 @@ const useContentState = () => {
     setError,
     setLoading,
   }) => {
-    let res = null;
-    if (type) {
-      res = await axiosInstance.get(
-        `content/posts-infinite/?limit=${limit}&offset=${offset}&content=${type}`
-      );
-    } else if (searchQuery) {
-      res = await axiosInstance.get(
-        `content/posts-infinite/?limit=${limit}&offset=${offset}&q=${searchQuery}`
-      );
-    } else {
-      res = await axiosInstance.get(
-        `content/posts-infinite/?limit=${limit}&offset=${offset}`
-      );
-    }
+    // Backend checks for which of these parameters are actually provided
+    axiosInstance
+      .get(
+        `content/posts-infinite/?limit=${limit}&offset=${offset}&filter=${filter}&type=${type}&search=${searchQuery}&sort=${sortBy}`
+      )
+      .then((res) => {
+        const newContent = res.data.content;
+        // If a filter has already been set, filter the results
+        if (filter) {
+          setContent([...content, ...newContent]);
+        } else {
+          setContent([...content, ...newContent]);
+        }
 
-    try {
-      const newContent = res.data.content;
-
-      // If a filter has already been set, filter the results
-      if (filter) {
-        const filteredContent = newContent.filter((content) =>
-          content.tags.includes(filter)
-        );
-        setContent(...content, ...filteredContent);
-      } else {
-        setContent([...content, ...newContent]);
-      }
-
-      setHasMore(res.data.has_more);
-      setOffset(offset + limit);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
+        setHasMore(res.data.has_more);
+        setOffset(offset + limit);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   };
 
   // Filter content by tags
@@ -133,6 +121,19 @@ const useContentState = () => {
       });
   };
 
+  // Sort content by input
+  const sortContent = (content, by, setContent) => {
+    const options = {
+      Newest: "added",
+      "Most Popular": "get_total_likes",
+    };
+    const sortProperty = options[by];
+    const sorted = [...content].sort(
+      (a, b) => b[sortProperty] - a[sortProperty]
+    );
+    setContent(sorted);
+  };
+
   // Get all user likes - not currently used anywhere
   const getLikedContent = (setState) => {
     axiosInstance.get(`content/likes/?user_id=${auth.user.id}`).then((res) => {
@@ -140,49 +141,42 @@ const useContentState = () => {
     });
   };
 
-  // Get info about like instance if user liked the post
-  const getUserLike = (postID, setLike) => {
-    axiosInstance.get(`content/likes/?post_id=${postID}`).then((res) => {
-      for (let like in res.data) {
-        if (like["user"] !== auth.user["id"]) {
-          setLike({
-            liked: true,
-            likeID: res.data[like].id,
-            totalLikes: res.data.length,
-          });
-        } else {
-          setLike({ liked: false, likeID: null, totalLikes: res.data.length });
-        }
+  // Handle Like / Dislike of content
+  const handleLike = (postID, likes, setLikeStatus) => {
+    if (auth.isAuthenticated) {
+      const user = auth.user.id;
+      let updatedLikes;
+      // If user has already liked the content - remove User ID from current likes
+      if (likes.includes(user)) {
+        updatedLikes = likes.filter((like) => like !== user);
+        // If user has not liked the content - add User ID to current likes
+      } else {
+        updatedLikes = [...likes, user];
       }
-    });
-  };
-
-  // Add Like
-  const addLike = (postID, setLike, totalLikes) => {
-    const user = auth.user.id;
-    const body = JSON.stringify({
-      post: postID,
-      user: user,
-    });
-
-    axiosInstance
-      .post("content/likes/", body, tokenConfig(auth.token))
-      .then((res) => {
-        setLike({
-          liked: true,
-          likeID: res.data.id,
-          totalLikes: totalLikes + 1,
+      // Set request body to include / exclude the like
+      const body = JSON.stringify({
+        likes: updatedLikes,
+      });
+      // Make API call and pass the body
+      axiosInstance
+        .patch(`content/posts/${postID}/`, body, tokenConfig(auth.token))
+        .then((res) => {
+          // Update the likeStatus state on the component
+          setLikeStatus({
+            liked: res.data.likes.includes(user),
+            likeCount: res.data.likes.length,
+            currentLikes: res.data.likes,
+          });
+        })
+        .catch((err) => {
+          dispatchErrors(returnErrors(err.response.data, err.response.status));
         });
-      });
-  };
-
-  // Delete Like
-  const deleteLike = (id, setLike, totalLikes) => {
-    axiosInstance
-      .delete(`content/likes/${id}`, tokenConfig(auth.token))
-      .then((res) => {
-        setLike({ liked: false, likeID: null, totalLikes: totalLikes - 1 });
-      });
+      // If user is not logged in, send an alert
+    } else {
+      dispatchMessages(
+        createMessage({ noAuthLike: "Please Log In or Sign Up" })
+      );
+    }
   };
 
   return {
@@ -191,12 +185,11 @@ const useContentState = () => {
     getContent,
     getInfiniteContent,
     deleteContent,
-    getUserLike,
-    deleteLike,
-    addLike,
+    handleLike,
     getLikedContent,
     filterContent,
     searchContent,
+    sortContent,
   };
 };
 

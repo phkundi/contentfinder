@@ -50,6 +50,10 @@ export const FilterBarHeadContainer = styled.div`
 export const FilterBarHeading = styled.h2`
   font-size: 1.3rem;
   padding-left: 1rem;
+
+  @media ${(props) => props.theme.device.laptop} {
+    padding-left: 0;
+  }
 `;
 
 export const ResetFilterButton = styled.button`

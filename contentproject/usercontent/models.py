@@ -24,18 +24,9 @@ class Post(models.Model):
     url = models.URLField(max_length=250, unique=True)
     owner = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE)
     content_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default="other")
+    added = models.DateField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="likes", blank=True)
 
     def __str__(self):
         return self.name
     
-    def get_total_likes(self):
-        return self.likes.count()
-    
-
-class Like(models.Model):
-    user = models.ForeignKey(User, related_name="likes", on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, related_name="likes", blank=True, null=True, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Like by {self.user.username}'

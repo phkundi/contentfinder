@@ -17,17 +17,20 @@ export const Card = styled(BaseAnimation)`
   justify-content: space-between;
   animation-name: ${FadeInAnimation};
 
-  @media ${(props) => props.theme.device.laptop} {
-    width: 45%;
-    margin-right: 2%;
+  @media ${(props) => props.theme.device.tablet} {
+    width: 48%;
   }
 
   @media ${(props) => props.theme.device.laptopL} {
-    width: 23%;
+    width: 31%;
   }
 
   @media ${(props) => props.theme.device.desktop} {
     width: 23%;
+  }
+
+  @media (min-width: 2200px) {
+    width: 18%;
   }
 `;
 

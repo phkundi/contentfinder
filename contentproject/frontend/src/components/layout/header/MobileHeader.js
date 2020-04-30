@@ -16,7 +16,7 @@ function MobileHeader({
   logout,
   goBack,
   searching,
-  setSearching,
+  toggleSearching,
   searchQuery,
   setSearchQuery,
   resetSearchQuery,
@@ -24,7 +24,7 @@ function MobileHeader({
   const [showMenu, toggleMenu] = useToggleState(false);
   const handleSearch = () => {
     resetSearchQuery();
-    setSearching();
+    toggleSearching();
   };
 
   return (
@@ -34,7 +34,7 @@ function MobileHeader({
           <Searchbar
             autofocus={true}
             searching={searching}
-            setSearching={setSearching}
+            toggleSearching={toggleSearching}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             resetSearchQuery={resetSearchQuery}

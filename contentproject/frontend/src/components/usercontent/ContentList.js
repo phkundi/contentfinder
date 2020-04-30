@@ -1,16 +1,26 @@
 import React, { memo, useState, useEffect } from "react";
 import useContentState from "../../hooks/useContentState";
+import useToggleState from "../../hooks/useToggleState";
 import ContentCard from "./ContentCard";
 import FilterBar from "./FilterBar";
 import {
   ListPageWrapper,
   ContentListWrapper,
   ListContainer,
+  ContentListHeader,
   ContentListHeading,
 } from "../styles/ContentListStyles";
 import { SearchMinLength, SearchResultsTitle } from "../styles/SearchbarStyles";
+import SortContentActions from "./SortContentActions";
 
-function ContentList({ heading, type, isSearch, searchQuery }) {
+function ContentList({
+  heading,
+  type,
+  isSearch,
+  searchQuery,
+  toggleSearching,
+}) {
+  const { getInfiniteContent, filterContent, sortContent } = useContentState();
   const [content, setContent] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,7 +28,13 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
   const [offset, setOffset] = useState(0);
   const limit = 20;
   const [filter, setFilter] = useState(null);
-  const { getInfiniteContent, filterContent } = useContentState();
+  const [showDropDown, toggleShowDropDown] = useToggleState(false);
+  const [sortBy, setSortBy] = useState("Newest");
+
+  // Trigger API Call
+  const loadContent = () => {
+    setLoading(true);
+  };
 
   // Load content when user reaches end of page
   window.onscroll = () => {
@@ -34,7 +50,7 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
 
   // Load content on initial page load
   useEffect(() => {
-    if (!isSearch) {
+    if (!isSearch || !searchQuery) {
       loadContent();
     }
   }, []);
@@ -67,23 +83,12 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
     }
   }, [type]);
 
-  // Filter Content when filter changes
+  // Filter Content when filter changes | Sort content when sortBy changes
   useEffect(() => {
-    // If there is a filter, call filterContent hook to filter current content state
-    if (filter) {
-      filterContent({ filter, content, setContent });
-      // If not, reset content & offset and trigger an entirely new query
-    } else {
-      setContent([]);
-      setOffset(0);
-      setLoading(true);
-    }
-  }, [filter]);
-
-  // Trigger API Call
-  const loadContent = () => {
-    setLoading(true);
-  };
+    setContent([]);
+    setOffset(0);
+    loadContent();
+  }, [filter, sortBy]);
 
   // Make API Call
   useEffect(() => {
@@ -100,15 +105,26 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
         setOffset,
         setLoading,
         searchQuery,
+        sortBy,
       });
     }
   }, [loading]);
+
+  // useEffect(() => {
+  //   // sortContent(content, sortBy, setContent);
+
+  // }, [sortBy]);
+
+  const handleSortClick = (e) => {
+    setSortBy(e.target.textContent);
+    toggleShowDropDown();
+  };
 
   // If this is a search request
   if (isSearch) {
     return (
       <ListPageWrapper>
-        <div>
+        <ContentListWrapper>
           <ContentListHeading>
             <SearchResultsTitle>Search Results:</SearchResultsTitle>{" "}
             {searchQuery}
@@ -122,10 +138,15 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
           )}
           <ListContainer>
             {content.map((content) => (
-              <ContentCard content={content} key={content.id} />
+              <ContentCard
+                key={content.id}
+                content={content}
+                isSearch={isSearch}
+                toggleSearching={toggleSearching}
+              />
             ))}
           </ListContainer>
-        </div>
+        </ContentListWrapper>
       </ListPageWrapper>
     );
     // If the user is browsing
@@ -134,19 +155,31 @@ function ContentList({ heading, type, isSearch, searchQuery }) {
       <ListPageWrapper>
         <FilterBar setFilter={setFilter} filter={filter} />
         <ContentListWrapper>
-          <ContentListHeading>{heading}</ContentListHeading>
+          <ContentListHeader>
+            <ContentListHeading>{heading}</ContentListHeading>
+            <SortContentActions
+              showDropDown={showDropDown}
+              toggleShowDropDown={toggleShowDropDown}
+              sortBy={sortBy}
+              handleSortClick={handleSortClick}
+            />
+          </ContentListHeader>
           <ListContainer>
             {content.map((content) => (
-              <ContentCard key={content.id} content={content} />
+              <ContentCard
+                key={content.id}
+                content={content}
+                setFilter={setFilter}
+              />
             ))}
           </ListContainer>
         </ContentListWrapper>
-        {/* {error && <div>{error}</div>}
-        {loading && <div>Loading</div>}
-        {!hasMore && <div>No more</div>} */}
+        {error && <div>{error}</div>}
+        {/* {loading && <div>Loading</div>} */}
+        {/* {!hasMore && <div>No more</div>} */}
       </ListPageWrapper>
     );
   }
 }
 
-export default memo(ContentList);
+export default ContentList;

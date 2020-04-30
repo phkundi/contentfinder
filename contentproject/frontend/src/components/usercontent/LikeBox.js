@@ -1,44 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   LikeBoxContainer,
   LikeBoxChildContainer,
 } from "../styles/ContentCardStyles";
-import useContentState from "../../hooks/useContentState";
 
-function LikeBox({ id, inDetail }) {
-  const { getUserLike, deleteLike, addLike } = useContentState();
-  const [likeStatus, setLikeStatus] = useState({
-    liked: false,
-    likeID: null,
-    totalLikes: 0,
-  });
-
-  useEffect(() => {
-    getUserLike(id, setLikeStatus);
-  }, []);
-
-  const handleDelete = () => {
-    deleteLike(likeStatus.likeID, setLikeStatus, likeStatus.totalLikes);
-  };
-
-  const handleLike = () => {
-    addLike(id, setLikeStatus, likeStatus.totalLikes);
-  };
-
+function LikeBox({ inDetail, liked, likeCount, handleClick }) {
   return (
-    <LikeBoxContainer
-      onClick={likeStatus.liked ? handleDelete : handleLike}
-      inDetail={inDetail}
-    >
+    <LikeBoxContainer inDetail={inDetail} onClick={handleClick}>
       <LikeBoxChildContainer>
-        {likeStatus.liked ? (
+        {liked ? (
           <i className="fas fa-heart" />
         ) : (
           <i className="far fa-heart" />
         )}
       </LikeBoxChildContainer>
       <LikeBoxChildContainer>
-        <span>{likeStatus.totalLikes}</span>
+        <span>{likeCount}</span>
       </LikeBoxChildContainer>
     </LikeBoxContainer>
   );

@@ -68,6 +68,9 @@ function Alerts() {
     if (messages.userUpdated) {
       alert.success(messages.userUpdated);
     }
+    if (messages.noAuthLike) {
+      alert.info(messages.noAuthLike);
+    }
     // Clear error state to prevent alert from showing up multiple times
     if (Object.keys(messages).length > 0) {
       dispatchMessages({ type: CLEAR_MESSAGES });

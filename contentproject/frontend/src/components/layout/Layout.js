@@ -5,7 +5,6 @@ import Alerts from "./Alerts";
 import useAuthState from "../../hooks/useAuthState";
 import useToggleState from "../../hooks/useToggleState";
 import useInputState from "../../hooks/useInputState";
-import SearchResults from "./SearchResults";
 import ContentList from "../usercontent/ContentList";
 import {
   LayoutContainer,
@@ -15,7 +14,7 @@ import {
 
 function Layout(props) {
   const { loadUser, auth, logoutUser } = useAuthState();
-  const [searching, setSearching] = useToggleState(false);
+  const [searching, toggleSearching] = useToggleState(false);
   const [searchQuery, setSearchQuery, resetSearchQuery] = useInputState("");
 
   useEffect(() => {
@@ -28,12 +27,12 @@ function Layout(props) {
       <MainContainer>
         <Header
           hideHeader={props.hideHeader}
+          hideSearch={props.hideSearch}
           auth={auth}
           logout={logoutUser}
           goBack={props.goBack}
-          hideSearch={props.hideSearch}
           searching={searching}
-          setSearching={setSearching}
+          toggleSearching={toggleSearching}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           resetSearchQuery={resetSearchQuery}
@@ -42,7 +41,11 @@ function Layout(props) {
         <Alerts />
         <ContentContainer noMarginTop={props.noMarginTop}>
           {searching ? (
-            <ContentList isSearch={true} searchQuery={searchQuery} />
+            <ContentList
+              isSearch={searching}
+              toggleSearching={toggleSearching}
+              searchQuery={searchQuery}
+            />
           ) : (
             props.children
           )}

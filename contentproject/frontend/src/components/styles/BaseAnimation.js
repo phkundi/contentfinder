@@ -12,7 +12,7 @@ const BaseAnimation = styled.div`
 `;
 
 BaseAnimation.defaultProps = {
-  duration: "1s",
+  duration: "0.8s",
   timingFunction: "ease",
   delay: "0s",
   iterationCount: "1",

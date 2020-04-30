@@ -8,7 +8,7 @@ function Header({
   goBack,
   hideSearch,
   searching,
-  setSearching,
+  toggleSearching,
   searchQuery,
   setSearchQuery,
   resetSearchQuery,
@@ -21,7 +21,7 @@ function Header({
         goBack={goBack}
         hideSearch={hideSearch}
         searching={searching}
-        setSearching={setSearching}
+        toggleSearching={toggleSearching}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         resetSearchQuery={resetSearchQuery}
@@ -32,7 +32,7 @@ function Header({
         goBack={goBack}
         hideSearch={hideSearch}
         searching={searching}
-        setSearching={setSearching}
+        toggleSearching={toggleSearching}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         resetSearchQuery={resetSearchQuery}

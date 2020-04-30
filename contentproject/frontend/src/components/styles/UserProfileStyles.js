@@ -24,8 +24,8 @@ export const UserInformationContainer = styled.div`
     border-radius: 30px;
   }
 
-  @media ${(props) => props.theme.device.desktopL} {
-    width: 80%;
+  @media ${(props) => props.theme.device.desktop} {
+    width: 70%;
   }
 `;
 
@@ -45,7 +45,7 @@ export const UserInfoGroup = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-  @media ${(props) => props.theme.device.laptop} {
+  @media ${(props) => props.theme.device.tablet} {
     flex-direction: row;
   }
 `;

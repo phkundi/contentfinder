@@ -5,17 +5,28 @@ export const ShareFormContainer = styled.div`
 
   box-shadow: ${(props) => props.theme.boxShadow.medium};
   padding: 2rem;
-  height: 80%;
   width: 100%;
   display: flex;
   flex-direction: column;
 
   @media ${(props) => props.theme.device.tablet} {
     border-radius: 30px;
+    width: 80%;
+    margin-top: 3rem;
   }
 
   @media ${(props) => props.theme.device.laptop} {
-    width: 60%;
+    width: 85%;
+    margin-top: 3rem;
+  }
+
+  @media ${(props) => props.theme.device.laptopL} {
+    width: 70%;
+    margin-top: 3rem;
+  }
+
+  @media ${(props) => props.theme.device.desktop} {
+    width: 50%;
     margin-top: 3rem;
   }
 `;
