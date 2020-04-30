@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../../axiosInstance";
 import UserInfoSection from "./UserInfoSection";
+import useToggleState from "../../../hooks/useToggleState";
 import useAuthState from "../../../hooks/useAuthState";
 import Modal from "../../common/Modal";
 import {
@@ -20,6 +21,7 @@ function UserInfo({ auth }) {
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
   const [bio, setBio] = useState(null);
+  const [showModal, toggleShowModal] = useToggleState(false);
 
   useEffect(() => {
     axiosInstance.get(`/auth/profiles/${user.id}/`).then((res) => {
@@ -44,15 +46,16 @@ function UserInfo({ auth }) {
   if (profile) {
     return (
       <UserInformationContainer>
-        <Modal
-          modalTitle="Are you sure?"
-          modalMessage="If you delete your profile, all the information stored related to it will be deleted permanently."
-          confirmButton="Delete"
-          cancelButton="Keep Account"
-          confirmAction={handleDelete}
-          modalType="warning"
-          modalID="deleteAccountModal"
-        />
+        {showModal && (
+          <Modal
+            modalTitle="Are you sure?"
+            modalMessage="If you delete your profile, all the information stored related to it will be deleted permanently."
+            confirmButton="Delete"
+            cancelButton="Keep Account"
+            confirmAction={handleDelete}
+            toggleShowModal={toggleShowModal}
+          />
+        )}
         <UserProfileTitle>Your Profile</UserProfileTitle>
         <UserInfoGroup>
           <UserInfoSection
@@ -95,8 +98,7 @@ function UserInfo({ auth }) {
           <UserProfileButton
             color="red"
             outlined={true}
-            data-toggle="modal"
-            data-target="#deleteAccountModal"
+            onClick={toggleShowModal}
           >
             Delete Profile
           </UserProfileButton>

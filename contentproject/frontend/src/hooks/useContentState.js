@@ -38,6 +38,12 @@ const useContentState = () => {
       );
   };
 
+  const getSinglePost = (id, setContent) => {
+    axiosInstance.get(`content/posts/${id}`).then((res) => {
+      setContent(res.data);
+    });
+  };
+
   // Get content for specific user
   const getUserContent = (setState) => {
     axiosInstance.get("/content/user/", tokenConfig(auth.token)).then((res) => {
@@ -181,10 +187,11 @@ const useContentState = () => {
 
   return {
     addContent,
+    deleteContent,
+    getSinglePost,
     getUserContent,
     getContent,
     getInfiniteContent,
-    deleteContent,
     handleLike,
     getLikedContent,
     filterContent,

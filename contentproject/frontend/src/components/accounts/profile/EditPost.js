@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../context/authContext";
-import useContentState from "../../hooks/useContentState";
-import LikeBox from "./LikeBox";
+import useContentState from "../../../hooks/useContentState";
 import {
   ContentDetailContainer,
   ContentDetailImage,
@@ -11,54 +9,21 @@ import {
   ContentDetailInfo,
   ContentDetailURL,
   ContentType,
-} from "../styles/ContentDetailStyles";
+} from "../../styles/ContentDetailStyles";
 
-function ContentDetail({ id }) {
-  // Methods etc.
-  const { auth } = useContext(AuthContext);
-  const { getSinglePost, handleLike } = useContentState();
-  // State
+function EditPost({ id }) {
   const [content, setContent] = useState("");
+  const { getSinglePost } = useContentState();
   const { content_type, name, owner, url, description, likes } = content;
-  const [likeStatus, setLikeStatus] = useState({
-    liked: false,
-    likeCount: 0,
-    currentLikes: 0,
-  });
-  const { liked, likeCount, currentLikes } = likeStatus;
 
-  // Lifecycle Methods
   useEffect(() => {
     getSinglePost(id, setContent);
   }, []);
 
-  useEffect(() => {
-    if (content) {
-      setLikeStatus({
-        liked: auth.isAuthenticated ? likes.includes(auth.user.id) : false,
-        likeCount: likes.length,
-        currentLikes: likes,
-      });
-    }
-  }, [content]);
-
-  // Handlers
-  const handleLikeClick = () => {
-    handleLike(id, currentLikes, setLikeStatus);
-  };
-
-  // Render
   if (content) {
     return (
       <ContentDetailContainer>
-        <ContentDetailImage source="https://source.unsplash.com/random">
-          <LikeBox
-            inDetail={true}
-            liked={liked}
-            likeCount={likeCount}
-            handleClick={handleLikeClick}
-          />
-        </ContentDetailImage>
+        <ContentDetailImage source="https://source.unsplash.com/random"></ContentDetailImage>
         <ContentDetailBody>
           <ContentType>{content_type}</ContentType>
           <ContentDetailTitle>{name}</ContentDetailTitle>
@@ -83,9 +48,6 @@ function ContentDetail({ id }) {
             ) : (
               ""
             )}
-            <ContentDetailSubtitle marginTop={true}>
-              Latest Posts
-            </ContentDetailSubtitle>
           </ContentDetailInfo>
         </ContentDetailBody>
       </ContentDetailContainer>
@@ -95,4 +57,4 @@ function ContentDetail({ id }) {
   }
 }
 
-export default ContentDetail;
+export default EditPost;
