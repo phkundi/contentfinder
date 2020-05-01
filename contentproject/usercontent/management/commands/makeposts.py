@@ -18,11 +18,13 @@ def randomword(length):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
 
-class Command(BaseCommand):
-
-    
-    
+class Command(BaseCommand):    
     def handle(self, *args, **kwargs):            
+        for tag in tags:
+            Tag.objects.get_or_create(
+                name=tag
+            )
+
         for i in range(300):
             url = f"http://{randomword(10)}.com"
             description= f"{adjectives[random.randrange(0, len(adjectives))]} {words[random.randrange(0, len(words))]} {verbs[random.randrange(0, len(verbs))]} {locations[random.randrange(0, len(locations))]}"

@@ -27,7 +27,7 @@ const useContentState = () => {
   // Delete Content
   const deleteContent = (id) => {
     axiosInstance
-      .delete(`/content/posts/${id}`, tokenConfig(auth.token))
+      .delete(`/content/posts/${id}/`, tokenConfig(auth.token))
       .then((res) => {
         dispatchMessages(
           createMessage({ contentDeleted: "Deleted successfully" })
@@ -38,8 +38,27 @@ const useContentState = () => {
       );
   };
 
+  const updateContent = (id, content) => {
+    const body = JSON.stringify({
+      name: content.newName,
+      url: content.newURL,
+      description: content.newDescription,
+    });
+
+    axiosInstance
+      .patch(`/content/posts/${id}/`, body, tokenConfig(auth.token))
+      .then((res) => {
+        dispatchMessages(
+          createMessage({ contentUpdated: "Updated successfully" })
+        );
+      })
+      .catch((err) => {
+        dispatchErrors(returnErrors(err.response.data, err.response.status));
+      });
+  };
+
   const getSinglePost = (id, setContent) => {
-    axiosInstance.get(`content/posts/${id}`).then((res) => {
+    axiosInstance.get(`content/posts/${id}/`).then((res) => {
       setContent(res.data);
     });
   };
@@ -188,6 +207,7 @@ const useContentState = () => {
   return {
     addContent,
     deleteContent,
+    updateContent,
     getSinglePost,
     getUserContent,
     getContent,

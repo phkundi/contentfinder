@@ -11,15 +11,20 @@ import {
 } from "../../styles/UserProfileStyles";
 
 function UserContent() {
-  const { getUserContent, deleteContent } = useContentState();
+  const { getUserContent, deleteContent, updateContent } = useContentState();
   const [userContent, setUserContent] = useState([]);
   const [showModal, toggleShowModal] = useToggleState(false);
   const [editing, toggleEditing] = useToggleState(false);
   const [handleID, setHandleID] = useState(null);
+  const [edited, toggleEdited] = useToggleState(false);
 
   useEffect(() => {
     getUserContent(setUserContent);
   }, []);
+
+  useEffect(() => {
+    if (edited) getUserContent(setUserContent);
+  }, [edited]);
 
   const handleDelete = (id) => {
     toggleShowModal();
@@ -38,6 +43,12 @@ function UserContent() {
     toggleEditing();
   };
 
+  const saveEdit = (id, content) => {
+    updateContent(id, content);
+    toggleEditing();
+    toggleEdited();
+  };
+
   return (
     <UserContentContainer>
       {showModal && (
@@ -52,10 +63,13 @@ function UserContent() {
       )}
       <UserContentHeading>
         {editing ? "Edit Post" : "Your Content"}
-        {editing && <button onClick={toggleEditing}>Close</button>}
       </UserContentHeading>
       {editing ? (
-        <EditPost id={handleID} />
+        <EditPost
+          id={handleID}
+          toggleEditing={toggleEditing}
+          saveEdit={saveEdit}
+        />
       ) : (
         <ListContainer>
           {userContent &&

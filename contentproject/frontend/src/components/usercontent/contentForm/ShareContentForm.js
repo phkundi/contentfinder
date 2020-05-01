@@ -116,7 +116,7 @@ function ShareContentForm(props) {
         />
       );
     case 6:
-      return <Redirect to="/profile" />;
+      return <Redirect to="/" />;
   }
 }
 

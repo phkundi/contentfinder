@@ -59,11 +59,14 @@ function Alerts() {
     if (messages.contentAdded) {
       alert.success(messages.contentAdded);
     }
-    if (messages.userDeleted) {
-      alert.success(messages.userDeleted);
+    if (messages.contentUpdated) {
+      alert.success(messages.contentUpdated);
     }
     if (messages.contentDeleted) {
       alert.success(messages.contentDeleted);
+    }
+    if (messages.userDeleted) {
+      alert.success(messages.userDeleted);
     }
     if (messages.userUpdated) {
       alert.success(messages.userUpdated);
