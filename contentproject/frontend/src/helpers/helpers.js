@@ -17,6 +17,20 @@ export const tokenConfig = (token) => {
   return config;
 };
 
+export const tokenConfigWithFile = (token) => {
+  // headers
+  const config = {
+    headers: { "Content-Type": "multipart/form-data" },
+  };
+
+  // IF token add to headers config
+  if (token) {
+    config.headers["Authorization"] = `Token ${token}`;
+  }
+
+  return config;
+};
+
 export const createMessage = (msg) => {
   return {
     type: CREATE_MESSAGE,

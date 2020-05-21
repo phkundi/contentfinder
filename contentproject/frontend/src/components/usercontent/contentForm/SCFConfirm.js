@@ -16,6 +16,7 @@ function SCFConfirm({
   contentDescription,
   contentURL,
   contentTags,
+  contentImage,
   handleSubmit,
 }) {
   return (
@@ -38,6 +39,11 @@ function SCFConfirm({
 
         <ShareFormSubheading>Tags</ShareFormSubheading>
         <ShareFormText>{contentTags.join(", ")}</ShareFormText>
+
+        <ShareFormSubheading>Image</ShareFormSubheading>
+        <ShareFormText>
+          {contentImage ? contentImage.name : "None"}
+        </ShareFormText>
       </ShareFormConfirmScreen>
 
       <ContentFormButtonContainer>

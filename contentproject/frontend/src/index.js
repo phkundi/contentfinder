@@ -15,7 +15,7 @@ import CustomAlert from "./components/layout/CustomAlert";
 
 // Alert options
 const alertOptions = {
-  timeout: 3000,
+  timeout: 5000,
   position: "top center",
 };
 
