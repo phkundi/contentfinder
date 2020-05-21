@@ -51,7 +51,7 @@ function ContentDetail({ id }) {
   if (content) {
     return (
       <ContentDetailContainer>
-        <ContentDetailImage source="https://source.unsplash.com/random">
+        <ContentDetailImage source={content.image_url}>
           <LikeBox
             inDetail={true}
             liked={liked}

@@ -17,6 +17,7 @@ export const FilterBarTag = styled.button`
   color: ${(props) => (props.active ? "#fff" : "#000")};
   padding: 0.5rem 1rem;
   border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   margin: 0 0.5rem;
   box-shadow: ${(props) => props.theme.boxShadow.light};
   transition: background-color 0.2s;

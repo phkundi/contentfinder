@@ -6,7 +6,6 @@ TYPE_CHOICES = (
     ('Blog', "Blog"),
     ('Podcast', 'Podcast'),
     ('Youtube', 'Youtube'),
-    ('Other', 'Other')
 )
 
 # Create your models here.
@@ -23,9 +22,10 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
     url = models.URLField(max_length=250, unique=True)
     owner = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE)
-    content_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default="other")
+    content_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     added = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name="likes", blank=True)
+    image = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useContentState from "../../../hooks/useContentState";
+import useToggleState from "../../../hooks/useToggleState";
+import EditPostImage from "./EditPostImage";
 import {
   ContentDetailContainer,
   ContentDetailImage,
@@ -10,75 +12,33 @@ import {
   ContentDetailURL,
   ContentType,
 } from "../../styles/ContentDetailStyles";
-import { UserProfileButton } from "../../styles/UserProfileStyles";
-import styled from "styled-components";
-
-const EditPostInput = styled.input`
-  background-color: white;
-  padding-bottom: 0.5rem;
-  font-size: inherit;
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  width: 100%;
-  margin-top: 1rem;
-
-  &:focus {
-    outline: none;
-    border-color: #000;
-  }
-`;
-const EditPostTextArea = styled.textarea`
-  background-color: white;
-  padding: 0.5rem;
-  font-size: inherit;
-  border: none;
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  border-radius: 15px;
-  width: 100%;
-  min-height: 200px;
-
-  &:focus {
-    outline: none;
-    border-color: #000;
-  }
-`;
-
-const EditPostButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-
-  & > button {
-    padding: 0.5rem 1.5rem;
-  }
-`;
-
-const EditPostImageButton = styled.div`
-  position: absolute;
-  top: 0;
-  ${(props) => props.left && "left: 0"};
-  ${(props) => props.right && "right: 0"};
-  border-top-right-radius: ${(props) => props.right && "30px"};
-  border-bottom-left-radius: ${(props) => props.right && "30px"};
-  border-top-left-radius: ${(props) => props.left && "30px"};
-  border-bottom-right-radius: ${(props) => props.left && "30px"};
-  background-color: white;
-  padding: 0.5rem 1.5rem;
-  color: ${(props) => props.theme.colors[props.color]};
-  font-size: 2rem;
-  cursor: pointer;
-`;
+import {
+  UserProfileButton,
+  EditPostInput,
+  EditPostTextArea,
+  EditPostButtonContainer,
+  EditPostImageButton,
+  ImageUploading,
+  ChangeImageActions,
+  ChangeImageInput,
+  ChangeImageLabel,
+  ChangeImageConfirm,
+} from "../../styles/UserProfileStyles";
 
 function EditPost({ id, toggleEditing, saveEdit }) {
+  const { getSinglePost, updateContentImage } = useContentState();
   const [content, setContent] = useState("");
-  const { getSinglePost } = useContentState();
-  const { content_type, name, url, description } = content;
+  const { content_type, name, url, description, image_url } = content;
+  const [showImageModal, toggleShowImageModal] = useToggleState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [newInfo, setNewInfo] = useState({
     newName: "Name",
     newDescription: "Description",
     newURL: "URL",
+    newImage: "Image",
   });
-  const { newName, newDescription, newURL } = newInfo;
+  const { newName, newDescription, newURL, newImage } = newInfo;
 
   useEffect(() => {
     getSinglePost(id, setContent);
@@ -89,7 +49,9 @@ function EditPost({ id, toggleEditing, saveEdit }) {
       newName: name,
       newDescription: description,
       newURL: url,
+      newImage: image_url,
     });
+    setUploading(false);
   }, [content]);
 
   const handleChange = (e) => {
@@ -100,15 +62,52 @@ function EditPost({ id, toggleEditing, saveEdit }) {
     saveEdit(id, newInfo);
   };
 
+  const handleImageChange = (e) => {
+    const label = document.getElementById("fileLabel");
+    label.innerHTML = e.target.files[0].name;
+    setSelectedImage(e.target.files[0]);
+  };
+
+  const handleImageUpload = () => {
+    setUploading(true);
+    let formData = new FormData();
+    formData.append("image", selectedImage, selectedImage.name);
+    updateContentImage({ id, formData, setContent });
+  };
+
   if (content) {
     return (
       <ContentDetailContainer>
-        <ContentDetailImage source="https://source.unsplash.com/random">
+        <ContentDetailImage source={newImage}>
+          <ImageUploading show={uploading}>Uploading ...</ImageUploading>
           <EditPostImageButton right={true} color="red" onClick={toggleEditing}>
             <i className="fas fa-times" />
           </EditPostImageButton>
-          <EditPostImageButton left={true} color="primary">
-            <i className="fas fa-images" />
+          <EditPostImageButton
+            left={true}
+            color="primary"
+            onClick={toggleShowImageModal}
+          >
+            {showImageModal ? (
+              <i className="fas fa-times" />
+            ) : (
+              <i className="fas fa-images" />
+            )}
+
+            <ChangeImageActions show={showImageModal}>
+              <ChangeImageInput
+                type="file"
+                id="postImage"
+                onChange={handleImageChange}
+                name="postImage"
+              />
+              <ChangeImageLabel htmlFor="postImage" id="fileLabel">
+                Choose Image
+              </ChangeImageLabel>
+              <ChangeImageConfirm>
+                <i className="fas fa-check" onClick={handleImageUpload} />
+              </ChangeImageConfirm>
+            </ChangeImageActions>
           </EditPostImageButton>
         </ContentDetailImage>
         <ContentDetailBody>

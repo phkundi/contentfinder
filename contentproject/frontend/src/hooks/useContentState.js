@@ -2,7 +2,12 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { MessageContext } from "../context/messageContext";
 import { ErrorContext } from "../context/errorContext";
-import { tokenConfig, createMessage, returnErrors } from "../helpers/helpers";
+import {
+  tokenConfig,
+  createMessage,
+  returnErrors,
+  tokenConfigWithFile,
+} from "../helpers/helpers";
 import { axiosInstance } from "../axiosInstance";
 
 const useContentState = () => {
@@ -11,13 +16,33 @@ const useContentState = () => {
   const { auth } = useContext(AuthContext);
 
   // Add new Content from Form
-  const addContent = (content) => {
+  const addContent = (content, setUploaded) => {
+    let image;
+    if (content.image) {
+      image = content.image;
+      delete content.image;
+    }
     axiosInstance
       .post(`/content/posts/`, content, tokenConfig(auth.token))
       .then((res) => {
-        dispatchMessages(
-          createMessage({ contentAdded: "Submitted successfully" })
-        );
+        // If the user selected an image we need to upload it seperately
+        if (image) {
+          const formData = new FormData();
+          formData.append("image", image, image.name);
+          const id = res.data.id;
+          updateContentImage({ id, formData, setUploaded });
+          dispatchMessages(
+            createMessage({
+              contentUploading: "Saving your content - please wait",
+            })
+          );
+          // Else we can set uploaded to true already
+        } else {
+          dispatchMessages(
+            createMessage({ contentAdded: "Submitted successfully" })
+          );
+          setUploaded(true);
+        }
       })
       .catch((err) =>
         dispatchErrors(returnErrors(err.response.data, err.response.status))
@@ -38,6 +63,7 @@ const useContentState = () => {
       );
   };
 
+  // Update Content Info
   const updateContent = (id, content) => {
     const body = JSON.stringify({
       name: content.newName,
@@ -57,6 +83,33 @@ const useContentState = () => {
       });
   };
 
+  // Update Content Image
+  const updateContentImage = ({
+    id,
+    formData,
+    setContent = null,
+    setUploaded = null,
+  }) => {
+    axiosInstance
+      .patch(`/content/posts/${id}/`, formData, tokenConfigWithFile(auth.token))
+      .then((res) => {
+        // In this case, the user updates the image
+        if (setContent) {
+          setContent(res.data);
+          dispatchMessages(
+            createMessage({ contentUpdated: "Updated successfully" })
+          );
+          // In this case, the user is adding a new post
+        } else if (setUploaded) {
+          setUploaded(true);
+        }
+      })
+      .catch((err) => {
+        dispatchErrors(returnErrors(err.response.data, err.response.status));
+      });
+  };
+
+  // Get a single post
   const getSinglePost = (id, setContent) => {
     axiosInstance.get(`content/posts/${id}/`).then((res) => {
       setContent(res.data);
@@ -208,6 +261,7 @@ const useContentState = () => {
     addContent,
     deleteContent,
     updateContent,
+    updateContentImage,
     getSinglePost,
     getUserContent,
     getContent,

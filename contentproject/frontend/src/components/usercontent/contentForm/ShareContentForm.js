@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import useInputState from "../../../hooks/useInputState";
 import SCFContentType from "./SCFContentType";
@@ -6,6 +6,7 @@ import SCFContentDetails from "./SCFContentDetails";
 import SCFURL from "./SCFURL";
 import SCFTags from "./SCFTags";
 import SCFConfirm from "./SCFConfirm";
+import SCFImage from "./SCFImage";
 import { MessageContext } from "../../../context/messageContext";
 import { createMessage } from "../../../helpers/helpers";
 import useContentState from "../../../hooks/useContentState";
@@ -21,6 +22,8 @@ function ShareContentForm(props) {
   const [contentDescription, setContentDescription] = useInputState("");
   const [contentURL, setContentURL] = useInputState("");
   const [contentTags, setContentTags] = useState([]);
+  const [contentImage, setContentImage] = useState(null);
+  const [uploaded, setUploaded] = useState(false);
   // Function to add content to database
   const { addContent } = useContentState();
 
@@ -32,6 +35,10 @@ function ShareContentForm(props) {
   // Return to previous step
   const prevStep = () => {
     setStep(step - 1);
+  };
+
+  const redirectUser = () => {
+    setStep(7);
   };
 
   const contentTypes = {
@@ -47,13 +54,19 @@ function ShareContentForm(props) {
       description: contentDescription,
       url: contentURL,
       tags: contentTags,
+      image: contentImage,
       content_type: contentTypes[contentType],
     };
 
-    addContent(content);
-    // Redirect User
-    nextStep();
+    addContent(content, setUploaded);
+    // Use Effect will redirect the user once the content is saved
   };
+
+  useEffect(() => {
+    if (uploaded) {
+      redirectUser();
+    }
+  }, [uploaded]);
 
   switch (step) {
     case 1:
@@ -105,6 +118,18 @@ function ShareContentForm(props) {
       );
     case 5:
       return (
+        <SCFImage
+          nextStep={nextStep}
+          prevStep={prevStep}
+          contentType={contentType}
+          dispatchMessages={dispatchMessages}
+          createMessage={createMessage}
+          contentImage={contentImage}
+          setContentImage={setContentImage}
+        />
+      );
+    case 6:
+      return (
         <SCFConfirm
           prevStep={prevStep}
           contentType={contentType}
@@ -112,10 +137,11 @@ function ShareContentForm(props) {
           contentDescription={contentDescription}
           contentURL={contentURL}
           contentTags={contentTags}
+          contentImage={contentImage}
           handleSubmit={handleSubmit}
         />
       );
-    case 6:
+    case 7:
       return <Redirect to="/" />;
   }
 }

@@ -56,6 +56,9 @@ function Alerts() {
     if (messages.noTags) {
       alert.error(messages.noTags);
     }
+    if (messages.noImageFile) {
+      alert.error(messages.noImageFile);
+    }
     if (messages.contentAdded) {
       alert.success(messages.contentAdded);
     }
@@ -73,6 +76,9 @@ function Alerts() {
     }
     if (messages.noAuthLike) {
       alert.info(messages.noAuthLike);
+    }
+    if (messages.contentUploading) {
+      alert.info(messages.contentUploading);
     }
     // Clear error state to prevent alert from showing up multiple times
     if (Object.keys(messages).length > 0) {

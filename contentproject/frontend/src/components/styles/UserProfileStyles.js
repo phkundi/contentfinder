@@ -148,3 +148,107 @@ export const UserContentHeading = styled.h2`
   text-align: center;
   font-size: 2rem;
 `;
+
+export const EditPostInput = styled.input`
+  background-color: white;
+  padding-bottom: 0.5rem;
+  font-size: inherit;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  width: 100%;
+  margin-top: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+  }
+`;
+
+export const EditPostTextArea = styled.textarea`
+  background-color: white;
+  padding: 0.5rem;
+  font-size: inherit;
+  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  width: 100%;
+  min-height: 200px;
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+  }
+`;
+
+export const EditPostButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  & > button {
+    padding: 0.5rem 1.5rem;
+  }
+`;
+
+export const EditPostImageButton = styled.div`
+  position: absolute;
+  top: 0;
+  ${(props) => props.left && "left: 0"};
+  ${(props) => props.right && "right: 0"};
+  border-top-right-radius: ${(props) => props.right && "30px"};
+  border-bottom-left-radius: ${(props) => props.right && "30px"};
+  border-top-left-radius: ${(props) => props.left && "30px"};
+  border-bottom-right-radius: ${(props) => props.left && "30px"};
+  background-color: white;
+  padding: 0.5rem 1.5rem;
+  color: ${(props) => props.theme.colors[props.color]};
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+export const ChangeImageActions = styled.div`
+  display: ${(props) => (props.show ? "flex" : "none")};
+`;
+
+export const ChangeImageInput = styled.input`
+  display: none;
+`;
+
+export const ChangeImageLabel = styled.label`
+  font-size: 1rem;
+  color: #fff;
+  margin-left: 1rem;
+  margin-bottom: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  background-color: ${(props) => props.theme.colors.primary};
+  cursor: pointer;
+  align-self: center;
+`;
+
+export const ChangeImageConfirm = styled.button`
+  margin-left: 1rem;
+  border: none;
+  background-color: transparent;
+  color: green;
+`;
+
+export const ImageUploading = styled.div`
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #666;
+  display: ${(props) => (props.show ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+`;

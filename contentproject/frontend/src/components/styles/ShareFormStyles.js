@@ -198,3 +198,32 @@ export const ShareFormTagSearch = styled.input`
     border-color: rgba(0, 0, 0, 0.4);
   }
 `;
+
+export const FileUpload = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
+
+export const FileLabel = styled.label`
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 2px solid ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
+  border-radius: 30px;
+  text-align: center;
+  width: 50%;
+`;
+
+export const FileSubmit = styled.button`
+  margin-top: 2rem;
+`;
+
+export const FileLoading = styled.div``;

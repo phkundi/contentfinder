@@ -48,7 +48,7 @@ function ContentCard({
   return (
     <Card>
       <div>
-        <CardImage source="https://source.unsplash.com/random">
+        <CardImage source={content.image_url}>
           <LikeBox
             likeCount={likeCount}
             handleClick={handleClick}
