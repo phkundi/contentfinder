@@ -60,3 +60,36 @@ export const ContentType = styled.h5`
   font-size: 1.5rem;
   text-transform: uppercase;
 `;
+
+export const CardFooter = styled.div`
+  padding: 1rem 2rem;
+  border-top: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1);
+`;
+
+export const CardTags = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const FooterText = styled.span`
+  font-size: 1rem;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.muted};
+`;
+
+export const TagBox = styled.button`
+  padding: 0.4rem;
+  background-color: white;
+  border: 1px solid;
+  color: ${(props) => props.theme.colors.muted};
+  border-radius: 15px;
+  font-size: 0.8rem;
+  margin-left: 1rem;
+  align-self: start;
+
+  &:hover {
+    color: #000;
+    border-color: #000;
+  }
+`;

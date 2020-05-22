@@ -1,13 +1,26 @@
 import React from "react";
+import { defaultImages } from "../../../constants";
 import {
   ShareFormContainer,
   ShareFormTitle,
-  ShareFormSubheading,
   ContentFormButtonContainer,
   ContentFormButton,
-  ShareFormText,
-  ShareFormConfirmScreen,
+  ImagePlaceholder,
 } from "../../styles/ShareFormStyles";
+import {
+  ContentDetailContainer,
+  ContentDetailImage,
+  ContentDetailTitle,
+  ContentDetailSubtitle,
+  ContentDetailBody,
+  ContentDetailInfo,
+  ContentDetailURL,
+  ContentType,
+  CardTags,
+  TagBox,
+  FooterText,
+  CardFooter,
+} from "../../styles/ContentDetailStyles";
 
 function SCFConfirm({
   prevStep,
@@ -19,33 +32,46 @@ function SCFConfirm({
   contentImage,
   handleSubmit,
 }) {
+  const getImage = () => {
+    if (contentImage) {
+      return "";
+    } else {
+      return defaultImages[contentType];
+    }
+  };
   return (
     <ShareFormContainer>
       <ShareFormTitle>Confirm Info</ShareFormTitle>
-      <ShareFormConfirmScreen>
-        <ShareFormSubheading>Content Type</ShareFormSubheading>
-        <ShareFormText>{contentType}</ShareFormText>
-
-        <ShareFormSubheading>Title</ShareFormSubheading>
-        <ShareFormText>{contentTitle}</ShareFormText>
-
-        <ShareFormSubheading>Description</ShareFormSubheading>
-        <ShareFormText>{contentDescription}</ShareFormText>
-
-        <ShareFormSubheading>URL</ShareFormSubheading>
-        <ShareFormText>
-          <a href={contentURL}>{contentURL}</a>
-        </ShareFormText>
-
-        <ShareFormSubheading>Tags</ShareFormSubheading>
-        <ShareFormText>{contentTags.join(", ")}</ShareFormText>
-
-        <ShareFormSubheading>Image</ShareFormSubheading>
-        <ShareFormText>
-          {contentImage ? contentImage.name : "None"}
-        </ShareFormText>
-      </ShareFormConfirmScreen>
-
+      <ContentDetailContainer style={{ margin: 0 }}>
+        <ContentDetailImage source={getImage()}>
+          {contentImage && (
+            <ImagePlaceholder>Image will upload when saved</ImagePlaceholder>
+          )}
+        </ContentDetailImage>
+        <ContentDetailBody>
+          <ContentType>{contentType}</ContentType>
+          <ContentDetailTitle>{contentTitle}</ContentDetailTitle>
+          <ContentDetailSubtitle muted={true}>
+            {/* By {owner.username} */}
+            By philippkundratitz
+          </ContentDetailSubtitle>
+          <ContentDetailURL href={contentURL}>{contentURL}</ContentDetailURL>
+          <ContentDetailInfo>
+            <ContentDetailSubtitle>Description</ContentDetailSubtitle>
+            <p>{contentDescription}</p>
+          </ContentDetailInfo>
+        </ContentDetailBody>
+        <CardFooter>
+          <CardTags>
+            <FooterText>Tags: </FooterText>
+            {contentTags.map((tag, i) => (
+              <TagBox key={i} onClick={() => setFilter(tag)}>
+                {tag}
+              </TagBox>
+            ))}
+          </CardTags>
+        </CardFooter>
+      </ContentDetailContainer>
       <ContentFormButtonContainer>
         <ContentFormButton onClick={prevStep}>Back</ContentFormButton>
         <ContentFormButton next={true} onClick={handleSubmit}>

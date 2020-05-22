@@ -5,9 +5,9 @@ export const AuthContext = createContext();
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticated: null,
+  isAuthenticated: localStorage.getItem("isAuthenticated") || false,
   isLoading: false,
-  user: null,
+  user: JSON.parse(localStorage.getItem("currentUser")),
 };
 
 export function AuthProvider(props) {

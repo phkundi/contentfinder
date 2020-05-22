@@ -79,7 +79,9 @@ function ContentCard({
           </CardTitle>
           <CardSubtitle>By {owner.username}</CardSubtitle>
           <CardDesription>
-            {description.substring(0, 100) + " ... "}
+            {description.length > 100
+              ? description.substring(0, 100) + " ... "
+              : description}
           </CardDesription>
         </CardBody>
       </div>

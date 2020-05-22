@@ -41,7 +41,7 @@ const useContentState = () => {
           dispatchMessages(
             createMessage({ contentAdded: "Submitted successfully" })
           );
-          setUploaded(true);
+          setUploaded(res.data.id);
         }
       })
       .catch((err) =>
@@ -101,7 +101,7 @@ const useContentState = () => {
           );
           // In this case, the user is adding a new post
         } else if (setUploaded) {
-          setUploaded(true);
+          setUploaded(id);
         }
       })
       .catch((err) => {

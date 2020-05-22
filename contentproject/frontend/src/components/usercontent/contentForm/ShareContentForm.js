@@ -10,6 +10,7 @@ import SCFImage from "./SCFImage";
 import { MessageContext } from "../../../context/messageContext";
 import { createMessage } from "../../../helpers/helpers";
 import useContentState from "../../../hooks/useContentState";
+import { contentSlugs } from "../../../constants";
 
 function ShareContentForm(props) {
   // To make success alert
@@ -23,7 +24,7 @@ function ShareContentForm(props) {
   const [contentURL, setContentURL] = useInputState("");
   const [contentTags, setContentTags] = useState([]);
   const [contentImage, setContentImage] = useState(null);
-  const [uploaded, setUploaded] = useState(false);
+  const [uploaded, setUploaded] = useState(null);
   // Function to add content to database
   const { addContent } = useContentState();
 
@@ -142,7 +143,11 @@ function ShareContentForm(props) {
         />
       );
     case 7:
-      return <Redirect to="/" />;
+      return (
+        <Redirect
+          to={`/${contentSlugs[contentTypes[contentType]]}/${uploaded}`}
+        />
+      );
   }
 }
 

@@ -227,3 +227,21 @@ export const FileSubmit = styled.button`
 `;
 
 export const FileLoading = styled.div``;
+
+export const ImagePlaceholder = styled.div`
+  position: absolute;
+  background-color: #666;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+`;

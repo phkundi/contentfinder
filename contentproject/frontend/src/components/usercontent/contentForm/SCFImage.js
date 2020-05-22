@@ -15,6 +15,7 @@ import {
 
 function SCFContentType({
   nextStep,
+  prevStep,
   contentType,
   dispatchMessages,
   createMessage,
@@ -66,6 +67,7 @@ function SCFContentType({
         </FileUpload>
       </FormGroup>
       <ContentFormButtonContainer>
+        <ContentFormButton onClick={prevStep}>Back</ContentFormButton>
         <ContentFormButton onClick={handleNext} next={true}>
           Next
         </ContentFormButton>

@@ -11,6 +11,10 @@ import {
   ContentDetailInfo,
   ContentDetailURL,
   ContentType,
+  CardTags,
+  TagBox,
+  FooterText,
+  CardFooter,
 } from "../styles/ContentDetailStyles";
 
 function ContentDetail({ id }) {
@@ -19,7 +23,7 @@ function ContentDetail({ id }) {
   const { getSinglePost, handleLike } = useContentState();
   // State
   const [content, setContent] = useState("");
-  const { content_type, name, owner, url, description, likes } = content;
+  const { content_type, name, owner, url, description, likes, tags } = content;
   const [likeStatus, setLikeStatus] = useState({
     liked: false,
     likeCount: 0,
@@ -88,6 +92,16 @@ function ContentDetail({ id }) {
             </ContentDetailSubtitle>
           </ContentDetailInfo>
         </ContentDetailBody>
+        <CardFooter>
+          <CardTags>
+            <FooterText>Tags: </FooterText>
+            {tags.map((tag, i) => (
+              <TagBox key={i} onClick={() => setFilter(tag)}>
+                {tag}
+              </TagBox>
+            ))}
+          </CardTags>
+        </CardFooter>
       </ContentDetailContainer>
     );
   } else {

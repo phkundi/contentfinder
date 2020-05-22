@@ -19,6 +19,8 @@ function App() {
       !window.localStorage.getItem("save-login")
     ) {
       localStorage.removeItem("token");
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("isAuthenticated");
     }
   };
 
