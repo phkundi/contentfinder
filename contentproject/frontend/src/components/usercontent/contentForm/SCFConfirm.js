@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../context/authContext";
 import { defaultImages } from "../../../constants";
 import {
   ShareFormContainer,
@@ -32,6 +33,8 @@ function SCFConfirm({
   contentImage,
   handleSubmit,
 }) {
+  const { auth } = useContext(AuthContext);
+  const { username } = auth;
   const getImage = () => {
     if (contentImage) {
       return "";
@@ -52,8 +55,7 @@ function SCFConfirm({
           <ContentType>{contentType}</ContentType>
           <ContentDetailTitle>{contentTitle}</ContentDetailTitle>
           <ContentDetailSubtitle muted={true}>
-            {/* By {owner.username} */}
-            By philippkundratitz
+            By {username}
           </ContentDetailSubtitle>
           <ContentDetailURL href={contentURL}>{contentURL}</ContentDetailURL>
           <ContentDetailInfo>

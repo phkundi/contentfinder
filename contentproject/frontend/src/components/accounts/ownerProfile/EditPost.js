@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import useContentState from "../../../hooks/useContentState";
 import useToggleState from "../../../hooks/useToggleState";
-import EditPostImage from "./EditPostImage";
+import EditPostImage from "./EditPostImage"; // did not work - needs fix
+import ContentHighlights from "../../usercontent/ContentHighlights";
 import {
   ContentDetailContainer,
   ContentDetailImage,
@@ -28,7 +29,8 @@ import {
 function EditPost({ id, toggleEditing, saveEdit }) {
   const { getSinglePost, updateContentImage } = useContentState();
   const [content, setContent] = useState("");
-  const { content_type, name, url, description, image_url } = content;
+  // const { content_type, name, url, description, image_url } = content;
+  const { post, highlights } = content;
   const [showImageModal, toggleShowImageModal] = useToggleState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -46,10 +48,10 @@ function EditPost({ id, toggleEditing, saveEdit }) {
 
   useEffect(() => {
     setNewInfo({
-      newName: name,
-      newDescription: description,
-      newURL: url,
-      newImage: image_url,
+      newName: post.name,
+      newDescription: post.description,
+      newURL: post.url,
+      newImage: post.image_url,
     });
     setUploading(false);
   }, [content]);
@@ -75,7 +77,7 @@ function EditPost({ id, toggleEditing, saveEdit }) {
     updateContentImage({ id, formData, setContent });
   };
 
-  if (content) {
+  if (post) {
     return (
       <ContentDetailContainer>
         <ContentDetailImage source={newImage}>
@@ -111,7 +113,7 @@ function EditPost({ id, toggleEditing, saveEdit }) {
           </EditPostImageButton>
         </ContentDetailImage>
         <ContentDetailBody>
-          <ContentType>{content_type}</ContentType>
+          <ContentType>{post.content_type}</ContentType>
           <ContentDetailTitle>
             <EditPostInput
               type="text"
@@ -137,6 +139,7 @@ function EditPost({ id, toggleEditing, saveEdit }) {
               onChange={handleChange}
               name="newDescription"
             />
+            <ContentHighlights highlights={highlights} inProfile={true} />
           </ContentDetailInfo>
           <EditPostButtonContainer>
             <UserProfileButton color="primary" onClick={handleSave}>

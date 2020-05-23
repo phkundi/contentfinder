@@ -65,6 +65,9 @@ function Alerts() {
     if (messages.contentUpdated) {
       alert.success(messages.contentUpdated);
     }
+    if (messages.highlightUpdated) {
+      alert.success(messages.highlightUpdated);
+    }
     if (messages.contentDeleted) {
       alert.success(messages.contentDeleted);
     }

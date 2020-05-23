@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import useContentState from "../../hooks/useContentState";
 import LikeBox from "./LikeBox";
+import ContentHighlights from "./ContentHighlights";
 import {
   ContentDetailContainer,
   ContentDetailImage,
@@ -23,7 +24,9 @@ function ContentDetail({ id }) {
   const { getSinglePost, handleLike } = useContentState();
   // State
   const [content, setContent] = useState("");
-  const { content_type, name, owner, url, description, likes, tags } = content;
+  const { post, highlights } = content;
+  // const { content_type, name, owner, url, description, likes, tags } = post;
+
   const [likeStatus, setLikeStatus] = useState({
     liked: false,
     likeCount: 0,
@@ -39,9 +42,9 @@ function ContentDetail({ id }) {
   useEffect(() => {
     if (content) {
       setLikeStatus({
-        liked: auth.isAuthenticated ? likes.includes(auth.user.id) : false,
-        likeCount: likes.length,
-        currentLikes: likes,
+        liked: auth.isAuthenticated ? post.likes.includes(auth.user.id) : false,
+        likeCount: post.likes.length,
+        currentLikes: post.likes,
       });
     }
   }, [content]);
@@ -52,10 +55,10 @@ function ContentDetail({ id }) {
   };
 
   // Render
-  if (content) {
+  if (post) {
     return (
       <ContentDetailContainer>
-        <ContentDetailImage source={content.image_url}>
+        <ContentDetailImage source={post.image_url}>
           <LikeBox
             inDetail={true}
             liked={liked}
@@ -64,38 +67,37 @@ function ContentDetail({ id }) {
           />
         </ContentDetailImage>
         <ContentDetailBody>
-          <ContentType>{content_type}</ContentType>
+          <ContentType>{post.content_type}</ContentType>
           <ContentDetailTitle>{name}</ContentDetailTitle>
 
           <ContentDetailSubtitle muted={true}>
-            By {owner.username}
+            By {post.owner.username}
           </ContentDetailSubtitle>
-          <ContentDetailURL href={url}>
-            {url.replace(/(^\w+:|^)\/\//, "")}
+          <ContentDetailURL href={post.url}>
+            {post.url.replace(/(^\w+:|^)\/\//, "")}
           </ContentDetailURL>
 
           <ContentDetailInfo>
             <ContentDetailSubtitle>Description</ContentDetailSubtitle>
-            <p>{description}</p>
-            {owner.bio ? (
+            <p>{post.description}</p>
+            {post.owner.bio && (
               <>
                 <ContentDetailSubtitle marginTop={true}>
-                  About {owner.username}
+                  About {post.owner.username}
                 </ContentDetailSubtitle>
-                <p>{owner.bio}</p>
+                <p>{post.owner.bio}</p>
               </>
-            ) : (
-              ""
             )}
-            <ContentDetailSubtitle marginTop={true}>
-              Latest Posts
-            </ContentDetailSubtitle>
+
+            {highlights && (
+              <ContentHighlights highlights={highlights} inProfile={true} />
+            )}
           </ContentDetailInfo>
         </ContentDetailBody>
         <CardFooter>
           <CardTags>
             <FooterText>Tags: </FooterText>
-            {tags.map((tag, i) => (
+            {post.tags.map((tag, i) => (
               <TagBox key={i} onClick={() => setFilter(tag)}>
                 {tag}
               </TagBox>

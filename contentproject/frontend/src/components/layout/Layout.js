@@ -23,7 +23,7 @@ function Layout(props) {
 
   return (
     <LayoutContainer>
-      <Sidebar auth={auth} />
+      <Sidebar auth={auth} logout={logoutUser} />
       <MainContainer>
         <Header
           hideHeader={props.hideHeader}

@@ -125,6 +125,7 @@ export const UserTextArea = styled.textarea`
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 30px;
+
   &:focus {
     outline: none;
   }

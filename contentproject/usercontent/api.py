@@ -1,7 +1,7 @@
-from .models import Tag, Post
+from .models import Tag, Post, Highlight
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
-from .serializers import TagSerializer, PostSerializer
+from .serializers import TagSerializer, PostSerializer, HighlightSerializer
 from django.db.models import Q, Count
 
 # Tags
@@ -37,8 +37,26 @@ class PostViewSet(viewsets.ModelViewSet):
         
     
     def perform_create(self, serializer):
-        print(self.request.FILES)
         serializer.save(owner=self.request.user)
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        post_serializer = self.serializer_class(instance)
+        highlight_queryset = Highlight.objects.filter(post=instance)
+        highlight_serializer = HighlightSerializer(highlight_queryset, many=True)
+        return Response({'post': post_serializer.data, 'highlights': highlight_serializer.data})
+
+class HighlightViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = HighlightSerializer
+    queryset = Highlight.objects.all()
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 # Infinite Posts Methods
 
@@ -158,6 +176,16 @@ class UserContentView(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return Post.objects.filter(owner=self.request.user)
+
+# Get content liked by the user
+class UserLikes(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.filter(likes__id=self.request.user.id)
+        return queryset
+
 
 # Search without infinite scroll - not currently used anywhere
 def search_filter(request):

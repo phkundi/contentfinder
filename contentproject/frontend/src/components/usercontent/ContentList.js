@@ -110,11 +110,6 @@ function ContentList({
     }
   }, [loading]);
 
-  // useEffect(() => {
-  //   // sortContent(content, sortBy, setContent);
-
-  // }, [sortBy]);
-
   const handleSortClick = (e) => {
     setSortBy(e.target.textContent);
     toggleShowDropDown();

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tag, Post
+from .models import Tag, Post, Highlight
 from django.conf import settings
 
 
@@ -20,7 +20,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
-    
+        
     def get_image_url(self, obj):
         if obj.image and obj.image.name != "1":
             url = obj.image.url
@@ -34,10 +34,10 @@ class PostSerializer(serializers.ModelSerializer):
             else:
                 return f"http://{settings.AWS_S3_CUSTOM_DOMAIN}/{settings.AWS_LOCATION}/default_blog.jpg" 
 
-        
-    
-
-    
+class HighlightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Highlight
+        fields = "__all__"
     
     
    

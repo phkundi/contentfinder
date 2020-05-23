@@ -152,6 +152,7 @@ export const CardEditButton = styled.button`
   color: ${(props) => props.theme.colors[props.color]};
   font-size: 1.3rem;
   border-top-right-radius: 30px;
+  background-color: transparent;
 
   &:first-child {
     border-bottom-left-radius: 30px;
@@ -172,7 +173,6 @@ export const LikeBoxContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  border-top-left-radius: 30px;
   border-bottom-right-radius: 30px;
   background-color: #fff;
   box-shadow: ${(props) => props.theme.boxShadow.light};
@@ -183,6 +183,10 @@ export const LikeBoxContainer = styled.div`
     & > div > i {
       transform: scale(1.1);
     }
+  }
+
+  @media ${(props) => props.theme.device.laptopL} {
+    border-top-left-radius: 30px;
   }
 `;
 

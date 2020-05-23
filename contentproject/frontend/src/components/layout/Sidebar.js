@@ -26,7 +26,7 @@ const SidebarCreateButton = (
   </SidebarButton>
 );
 
-function Sidebar({ auth }) {
+function Sidebar({ auth, logout }) {
   return (
     <SidebarContainer>
       <SidebarLogo>
@@ -47,6 +47,24 @@ function Sidebar({ auth }) {
           <SidebarListItem>
             <Link to="/youtube">Youtube</Link>
           </SidebarListItem>
+
+          {auth.isAuthenticated && (
+            <>
+              <hr />
+              <SidebarListItem isHeading={true}>Account</SidebarListItem>
+              <SidebarListItem>
+                <Link to="/profile">Your Profile</Link>
+              </SidebarListItem>
+              <SidebarListItem>
+                <Link to="/profile/liked">Liked By You</Link>
+              </SidebarListItem>
+              <SidebarListItem>
+                <Link to="#" onClick={logout}>
+                  Logout
+                </Link>
+              </SidebarListItem>
+            </>
+          )}
           {auth.isAuthenticated ? SidebarCreateButton : SidebarAuthButtons}
         </SidebarMenu>
       </SidebarNav>

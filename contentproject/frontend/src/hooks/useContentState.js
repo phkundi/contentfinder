@@ -109,9 +109,46 @@ const useContentState = () => {
       });
   };
 
+  // Update Content Highlight
+  const updateHighlight = (id, content, state, setState) => {
+    const body = JSON.stringify({
+      title: content.title,
+      url: content.url,
+    });
+    axiosInstance
+      .patch(`/content/highlights/${id}/`, body, tokenConfig(auth.token))
+      .then((res) => {
+        // Replace old content with new
+        const newState = [state.filter((h) => h.id != id), res.data].filter(
+          (a) => a.id
+        );
+        // Set state to update frontend
+        setState(newState);
+        // Send alert
+        dispatchMessages(
+          createMessage({ highlightUpdated: "Updated Highlight" })
+        );
+      });
+  };
+
+  // Delete Content Highlight
+  const deleteHighlight = (id) => {
+    axiosInstance
+      .delete(`/content/highlights/${id}/`, tokenConfig(auth.token))
+      .then((res) => {
+        dispatchMessages(
+          createMessage({ contentDeleted: "Deleted Highlight" })
+        );
+      })
+      .catch((err) =>
+        dispatchErrors(returnErrors(err.response.data, err.response.status))
+      );
+  };
+
   // Get a single post
   const getSinglePost = (id, setContent) => {
     axiosInstance.get(`content/posts/${id}/`).then((res) => {
+      console.log(res);
       setContent(res.data);
     });
   };
@@ -121,6 +158,15 @@ const useContentState = () => {
     axiosInstance.get("/content/user/", tokenConfig(auth.token)).then((res) => {
       setState(res.data);
     });
+  };
+
+  // Get all the posts liked by the user
+  const getLikedContent = (setPosts) => {
+    axiosInstance
+      .get("/content/user/liked", tokenConfig(auth.token))
+      .then((res) => {
+        setPosts(res.data);
+      });
   };
 
   // Get all content matching filter & type
@@ -212,13 +258,6 @@ const useContentState = () => {
     setContent(sorted);
   };
 
-  // Get all user likes - not currently used anywhere
-  const getLikedContent = (setState) => {
-    axiosInstance.get(`content/likes/?user_id=${auth.user.id}`).then((res) => {
-      setState(res.data);
-    });
-  };
-
   // Handle Like / Dislike of content
   const handleLike = (postID, likes, setLikeStatus) => {
     if (auth.isAuthenticated) {
@@ -262,6 +301,8 @@ const useContentState = () => {
     deleteContent,
     updateContent,
     updateContentImage,
+    updateHighlight,
+    deleteHighlight,
     getSinglePost,
     getUserContent,
     getContent,
