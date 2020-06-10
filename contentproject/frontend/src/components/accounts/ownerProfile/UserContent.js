@@ -20,7 +20,7 @@ function UserContent() {
 
   useEffect(() => {
     getUserContent(setUserContent);
-  }, []);
+  }, [editing]);
 
   useEffect(() => {
     if (edited) getUserContent(setUserContent);

@@ -89,9 +89,7 @@ function ContentDetail({ id }) {
               </>
             )}
 
-            {highlights && (
-              <ContentHighlights highlights={highlights} inProfile={true} />
-            )}
+            {highlights && <ContentHighlights highlights={highlights} />}
           </ContentDetailInfo>
         </ContentDetailBody>
         <CardFooter>

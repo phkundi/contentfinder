@@ -5,9 +5,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('frontend.urls')),
     path('api/content/', include('usercontent.urls')),
-    path('api/auth/', include('users.urls'))
+    path('api/auth/', include('users.urls')),
+    path('', include('frontend.urls')),
 ]
 
 if settings.ENVIRONMENT == 'development':

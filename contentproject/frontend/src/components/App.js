@@ -9,6 +9,7 @@ import ShareContentForm from "./usercontent/contentForm/ShareContentForm";
 import PrivateRoute from "./common/PrivateRoute";
 import PageNotFound from "./common/PageNotFound.js";
 import UserProfile from "./accounts/ownerProfile/UserProfile";
+import EditPost from "./accounts/ownerProfile/EditPost";
 import LikedPosts from "./accounts/ownerProfile/LikedPosts";
 
 function App() {
@@ -123,6 +124,13 @@ function App() {
         component={UserProfile}
         noMarginTop={true}
       />
+      {/* <PrivateRoute
+        exact
+        path="/edit/:id"
+        component={ContentDetail}
+        editing={true}
+        noMarginTop={true}
+      /> */}
       <PrivateRoute exact path="/profile/liked" component={LikedPosts} />
       {/* Catch All Route */}
       <Route

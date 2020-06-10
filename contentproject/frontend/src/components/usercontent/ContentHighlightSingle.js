@@ -14,6 +14,7 @@ function ContentHighlightSingle({
   isNew,
   handleUpdate,
   handleDelete,
+  handleCreate,
 }) {
   const [editing, toggleEditing] = useToggleState(isNew);
   const [title, setTitle] = useInputState(highlight.title);
@@ -24,6 +25,11 @@ function ContentHighlightSingle({
     const id = highlight.id;
     handleUpdate(id, title, url);
     // Set editing to false
+    toggleEditing();
+  };
+
+  const handleCreateClick = () => {
+    handleCreate(title, url);
     toggleEditing();
   };
 
@@ -46,7 +52,7 @@ function ContentHighlightSingle({
 
   return (
     <ContentHighlight>
-      {editing ? editHighlight : <a href={highlight.url}>{highlight.title}</a>}
+      {editing ? editHighlight : <a href={url}>{title}</a>}
       {inProfile ? (
         <span className="editOptions">
           {editing ? (

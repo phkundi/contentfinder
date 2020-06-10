@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import Theme from "./context/ThemeContext";
@@ -26,10 +26,10 @@ ReactDOM.render(
         <ErrorProvider>
           <MessageProvider>
             <ContentProvider>
-              <HashRouter>
+              <BrowserRouter>
                 <GlobalStyle />
                 <App />
-              </HashRouter>
+              </BrowserRouter>
             </ContentProvider>
           </MessageProvider>
         </ErrorProvider>

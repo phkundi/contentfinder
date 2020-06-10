@@ -29,16 +29,15 @@ import {
 function EditPost({ id, toggleEditing, saveEdit }) {
   const { getSinglePost, updateContentImage } = useContentState();
   const [content, setContent] = useState("");
-  // const { content_type, name, url, description, image_url } = content;
   const { post, highlights } = content;
   const [showImageModal, toggleShowImageModal] = useToggleState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [newInfo, setNewInfo] = useState({
-    newName: "Name",
-    newDescription: "Description",
-    newURL: "URL",
-    newImage: "Image",
+    newName: "name",
+    newDescription: "description",
+    newURL: "url",
+    newImage: "image_url",
   });
   const { newName, newDescription, newURL, newImage } = newInfo;
 
@@ -47,12 +46,14 @@ function EditPost({ id, toggleEditing, saveEdit }) {
   }, []);
 
   useEffect(() => {
-    setNewInfo({
-      newName: post.name,
-      newDescription: post.description,
-      newURL: post.url,
-      newImage: post.image_url,
-    });
+    if (post) {
+      setNewInfo({
+        newName: post.name,
+        newDescription: post.description,
+        newURL: post.url,
+        newImage: post.image_url,
+      });
+    }
     setUploading(false);
   }, [content]);
 
@@ -74,7 +75,7 @@ function EditPost({ id, toggleEditing, saveEdit }) {
     setUploading(true);
     let formData = new FormData();
     formData.append("image", selectedImage, selectedImage.name);
-    updateContentImage({ id, formData, setContent });
+    updateContentImage({ id, formData, setContent, toggleEditing });
   };
 
   if (post) {
@@ -139,7 +140,11 @@ function EditPost({ id, toggleEditing, saveEdit }) {
               onChange={handleChange}
               name="newDescription"
             />
-            <ContentHighlights highlights={highlights} inProfile={true} />
+            <ContentHighlights
+              postId={post.id}
+              highlights={highlights}
+              inProfile={true}
+            />
           </ContentDetailInfo>
           <EditPostButtonContainer>
             <UserProfileButton color="primary" onClick={handleSave}>

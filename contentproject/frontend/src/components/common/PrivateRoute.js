@@ -14,8 +14,8 @@ function PrivateRoute({ component: Component, ...rest }) {
           return <Redirect to="/login" />;
         } else {
           return (
-            <Layout {...rest} {...props}>
-              <Component auth={auth} />
+            <Layout {...rest}>
+              <Component auth={auth} {...rest} {...props} />
             </Layout>
           );
         }

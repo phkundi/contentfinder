@@ -11,6 +11,7 @@ import { MessageContext } from "../../../context/messageContext";
 import { createMessage } from "../../../helpers/helpers";
 import useContentState from "../../../hooks/useContentState";
 import { contentSlugs } from "../../../constants";
+import SCFHighlights from "./SCFHighlights";
 
 function ShareContentForm(props) {
   // To make success alert
@@ -24,6 +25,7 @@ function ShareContentForm(props) {
   const [contentURL, setContentURL] = useInputState("");
   const [contentTags, setContentTags] = useState([]);
   const [contentImage, setContentImage] = useState(null);
+  const [contentHighlights, setContentHighlights] = useState([]);
   const [uploaded, setUploaded] = useState(null);
   // Function to add content to database
   const { addContent } = useContentState();
@@ -129,6 +131,18 @@ function ShareContentForm(props) {
           setContentImage={setContentImage}
         />
       );
+    // case 6:
+    //   return (
+    //     <SCFHighlights
+    //       nextStep={nextStep}
+    //       prevStep={prevStep}
+    //       contentType={contentType}
+    //       dispatchMessages={dispatchMessages}
+    //       createMessage={createMessage}
+    //       contentHighlights={contentHighlights}
+    //       setContentHighlights={setContentHighlights}
+    //     />
+    //   );
     case 6:
       return (
         <SCFConfirm

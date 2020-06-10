@@ -185,7 +185,7 @@ export const LikeBoxContainer = styled.div`
     }
   }
 
-  @media ${(props) => props.theme.device.laptopL} {
+  @media ${(props) => props.theme.device.laptop} {
     border-top-left-radius: 30px;
   }
 `;

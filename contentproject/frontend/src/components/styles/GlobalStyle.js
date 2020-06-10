@@ -21,6 +21,10 @@ const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.primary}
   }
 
+  button{
+    border: none;
+  }
+
   button:focus {
     outline: none;
   }

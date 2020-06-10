@@ -8,8 +8,8 @@ import {
 import { ContentDetailSubtitle } from "../styles/ContentDetailStyles";
 import ContentHighlightSingle from "./ContentHighlightSingle";
 
-function ContentHighlights({ highlights, inProfile }) {
-  const { updateHighlight, deleteHighlight } = useContentState();
+function ContentHighlights({ postId, highlights, inProfile }) {
+  const { updateHighlight, deleteHighlight, addHighlight } = useContentState();
   const [highlightState, setHighlightState] = useState(highlights);
   const [addNew, toggleAddNew] = useToggleState(false);
 
@@ -19,9 +19,11 @@ function ContentHighlights({ highlights, inProfile }) {
     updateHighlight(id, updatedHighlight, highlightState, setHighlightState);
   };
 
-  const handleCreate = () => {
+  const handleCreate = (title, url) => {
     // Send API Call to create highlight
+    addHighlight(postId, title, url, highlightState, setHighlightState);
     // Set editing to false
+    toggleAddNew();
     // Added Highlight should become permanently visible
   };
 

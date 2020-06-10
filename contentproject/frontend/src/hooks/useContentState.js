@@ -88,6 +88,7 @@ const useContentState = () => {
     id,
     formData,
     setContent = null,
+    toggleEditing = null,
     setUploaded = null,
   }) => {
     axiosInstance
@@ -96,6 +97,7 @@ const useContentState = () => {
         // In this case, the user updates the image
         if (setContent) {
           setContent(res.data);
+          toggleEditing();
           dispatchMessages(
             createMessage({ contentUpdated: "Updated successfully" })
           );
@@ -103,6 +105,29 @@ const useContentState = () => {
         } else if (setUploaded) {
           setUploaded(id);
         }
+      })
+      .catch((err) => {
+        dispatchErrors(returnErrors(err.response.data, err.response.status));
+      });
+  };
+
+  // Add Highlight
+  const addHighlight = (postId, title, url, state, setState) => {
+    const body = JSON.stringify({
+      title: title,
+      url: url,
+      post: postId,
+      owner: auth.user.id,
+    });
+    axiosInstance
+      .post("/content/highlights/", body, tokenConfig(auth.token))
+      .then((res) => {
+        setState([...state, res.data]);
+        dispatchMessages(
+          createMessage({
+            highlightAdded: "Created Highlight",
+          })
+        );
       })
       .catch((err) => {
         dispatchErrors(returnErrors(err.response.data, err.response.status));
@@ -128,6 +153,9 @@ const useContentState = () => {
         dispatchMessages(
           createMessage({ highlightUpdated: "Updated Highlight" })
         );
+      })
+      .catch((err) => {
+        dispatchErrors(returnErrors(err.response.data, err.response.status));
       });
   };
 
@@ -301,6 +329,7 @@ const useContentState = () => {
     deleteContent,
     updateContent,
     updateContentImage,
+    addHighlight,
     updateHighlight,
     deleteHighlight,
     getSinglePost,
