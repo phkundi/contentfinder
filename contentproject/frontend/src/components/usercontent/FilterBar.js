@@ -12,13 +12,14 @@ function FilterBar({ setFilter, filter }) {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    const getTags = () => {
-      axiosInstance.get("content/tags/").then((res) => {
-        setTags(res.data);
-      });
-    };
     getTags();
   }, []);
+
+  const getTags = () => {
+    axiosInstance.get("content/tags/").then((res) => {
+      setTags(res.data);
+    });
+  };
 
   const resetFilter = () => {
     setFilter(null);

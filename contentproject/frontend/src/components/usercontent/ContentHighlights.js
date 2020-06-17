@@ -59,13 +59,15 @@ function ContentHighlights({ postId, highlights, inProfile }) {
             handleCreate={handleCreate}
           />
         )}
-        <AddHighlightButton onClick={handleAddHighlight}>
-          {addNew ? (
-            <i className="fas fa-times" />
-          ) : (
-            <i className="fas fa-plus" />
-          )}
-        </AddHighlightButton>
+        {inProfile && (
+          <AddHighlightButton onClick={handleAddHighlight}>
+            {addNew ? (
+              <i className="fas fa-times" />
+            ) : (
+              <i className="fas fa-plus" />
+            )}
+          </AddHighlightButton>
+        )}
       </ContentHighlightList>
     </Fragment>
   );

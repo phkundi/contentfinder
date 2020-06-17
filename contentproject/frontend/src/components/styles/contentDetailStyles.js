@@ -16,6 +16,10 @@ export const ContentDetailContainer = styled.div`
     margin: 1rem;
     border-radius: 30px;
   }
+
+  @media ${(props) => props.theme.device.laptopL} {
+    width: 75%;
+  }
 `;
 
 export const ContentDetailImage = styled.div`

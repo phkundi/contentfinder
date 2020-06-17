@@ -45,7 +45,7 @@ function SCFConfirm({
   return (
     <ShareFormContainer>
       <ShareFormTitle>Confirm Info</ShareFormTitle>
-      <ContentDetailContainer style={{ margin: 0 }}>
+      <ContentDetailContainer style={{ margin: 0, width: "100%" }}>
         <ContentDetailImage source={getImage()}>
           {contentImage && (
             <ImagePlaceholder>Image will upload when saved</ImagePlaceholder>
