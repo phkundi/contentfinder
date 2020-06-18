@@ -4,6 +4,7 @@ App for posting and finding content from independent creators
 # Instructions:
 ## Install dependencies
 `pip install -r requirements.txt`
+
 `npm install`
 
 ## Bundle static files to work with your file system
