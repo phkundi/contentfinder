@@ -4,8 +4,10 @@ App for posting and finding content from independent creators
 # Instructions:
 ## Install dependencies
 `pip install -r requirements.txt`
+`npm install`
 
-For frontend development: `npm install`
+## Bundle static files to work with your file system
+`npm run start` or `npm run build`
 
 ## Go into project folder 
 `cd contentproject`
